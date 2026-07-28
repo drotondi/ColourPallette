@@ -10,13 +10,13 @@ Es **un solo archivo** (`index.html`): sin build, sin dependencias, sin conexió
 ## Cómo usarla
 
 1. **¿A dónde vas?** — Oficina · Elegante · Informal
-2. **Clima de hoy** — Calor · Templado · Frío (viene preseleccionado según el mes, hemisferio sur)
-3. **Ya tengo puesto…** — Arriba · Pantalón, y tocás el color
-4. Aparecen las combinaciones ordenadas de mejor a peor, con el motivo de por qué funcionan
+2. **Ya tengo puesto…** — Arriba · Pantalón, y tocás el color
+3. Aparecen las combinaciones ordenadas de mejor a peor, con el motivo de por qué funcionan
 
 En la pestaña **Mi paleta** hay un test de cuatro preguntas (piel, sol, pelo, ojos) que define tu
 estación personal: Primavera, Verano, Otoño o Invierno. A partir de ahí las combinaciones que
-caen dentro de tu paleta suben en el ranking y llevan la estrella ★.
+caen dentro de tu paleta suben en el ranking y llevan el distintivo «Tu paleta»; en el selector,
+los colores que te favorecen quedan marcados con un punto.
 
 Todo queda guardado en el celular (`localStorage`). No se envía nada a ningún lado.
 
@@ -38,7 +38,7 @@ Todo vive en `index.html`, en secciones numeradas dentro del `<script>`:
 
 | Sección | Qué hay |
 |---|---|
-| 1. Datos | `COLORES` — catálogo de 32 colores con hex, temperatura, si es neutro, estaciones y clima |
+| 1. Datos | `COLORES` — catálogo de 32 colores con hex, temperatura, si es neutro y en qué estaciones luce |
 | 2. Datos | `OCASIONES` — qué colores son admisibles en cada prenda según a dónde vas |
 | 3. Motor | `conflictoPar`, `evaluar`, `sugerir` — descartes duros y puntaje |
 | 4. Test | `PREGUNTAS` y `calcularEstacion` |
@@ -60,8 +60,8 @@ recortan a las 6 mejores.
 
 Un neutro de base y un solo acento (60-30-10), contraste marcado entre arriba y abajo, matices
 vecinos u opuestos en la rueda de color, coherencia de temperatura cálido/frío, coincidencia
-con tu paleta personal y con el clima del día, y un empujón fijo a los pares clásicos de
-sastrería (marino + blanco, gris + celeste, oliva + crema, etc.).
+con tu paleta personal, y un empujón fijo a los pares clásicos de sastrería
+(marino + blanco, gris + celeste, oliva + crema, etc.).
 
 ### Agregar un color
 

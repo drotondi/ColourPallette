@@ -22,6 +22,7 @@
     --bg: #fbfbfd;
     --card: #ffffff;
     --fill: rgba(118,118,128,.10);   /* relleno de controles, como iOS */
+    --seg-sel: #ffffff;              /* pastilla del segmento elegido */
     --sep: rgba(60,60,67,.16);       /* separadores hairline */
     --txt: #1d1d1f;
     --txt-2: #6e6e73;
@@ -39,6 +40,9 @@
       --bg: #000000;
       --card: #1c1c1e;
       --fill: rgba(118,118,128,.24);
+      /* en oscuro la pastilla NO puede ser del color de las tarjetas: sobre el
+         fondo negro quedaba indistinguible del propio control. Gris claro, como iOS */
+      --seg-sel: #636366;
       --sep: rgba(84,84,88,.45);
       --txt: #f5f5f7;
       --txt-2: #98989d;
@@ -143,7 +147,7 @@
     transition: background .18s ease, box-shadow .18s ease;
   }
   .seg button[aria-pressed="true"] {
-    background: var(--card);
+    background: var(--seg-sel);
     box-shadow: var(--sombra-pill);
     font-weight: 590;
   }
@@ -326,11 +330,6 @@
     </div>
 
     <div class="bloque">
-      <p class="rotulo">Clima de hoy</p>
-      <div class="seg" id="chipsClima"></div>
-    </div>
-
-    <div class="bloque">
       <p class="rotulo">Ya tengo puesto…</p>
       <div class="seg" id="chipsSlot"></div>
     </div>
@@ -380,50 +379,49 @@
 
 /* temp:  calido | frio | neutro
    neutro: true = sirve de base (poco saturado o clásico de fondo de armario)
-   estaciones: paletas personales donde ese color luce bien
-   clima: 'calor' | 'frio' | 'templado' — en qué temporada pide cancha        */
+   estaciones: paletas personales donde ese color luce bien              */
 const COLORES = [
   // --- neutros oscuros ---
-  { id:'negro',      nombre:'Negro',        hex:'#16181D', temp:'frio',   neutro:true,  estaciones:['invierno'],              clima:['frio','templado'] },
-  { id:'marino',     nombre:'Azul marino',  hex:'#1F2A44', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['frio','templado','calor'] },
-  { id:'carbon',     nombre:'Gris carbón',  hex:'#3B4048', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['frio','templado'] },
-  { id:'chocolate',  nombre:'Chocolate',    hex:'#4A3728', temp:'calido', neutro:true,  estaciones:['otono'],                 clima:['frio','templado'] },
-  { id:'botella',    nombre:'Verde botella',hex:'#20463A', temp:'frio',   neutro:true,  estaciones:['invierno','otono'],      clima:['frio','templado'] },
+  { id:'negro',      nombre:'Negro',        hex:'#16181D', temp:'frio',   neutro:true,  estaciones:['invierno'] },
+  { id:'marino',     nombre:'Azul marino',  hex:'#1F2A44', temp:'frio',   neutro:true,  estaciones:['invierno','verano'] },
+  { id:'carbon',     nombre:'Gris carbón',  hex:'#3B4048', temp:'frio',   neutro:true,  estaciones:['invierno','verano'] },
+  { id:'chocolate',  nombre:'Chocolate',    hex:'#4A3728', temp:'calido', neutro:true,  estaciones:['otono'] },
+  { id:'botella',    nombre:'Verde botella',hex:'#20463A', temp:'frio',   neutro:true,  estaciones:['invierno','otono'] },
 
   // --- neutros medios ---
-  { id:'grisMedio',  nombre:'Gris medio',   hex:'#8A9098', temp:'frio',   neutro:true,  estaciones:['verano','invierno'],     clima:['frio','templado','calor'] },
-  { id:'azulAcero',  nombre:'Azul acero',   hex:'#55708C', temp:'frio',   neutro:true,  estaciones:['verano'],                clima:['templado','calor'] },
-  { id:'denim',      nombre:'Denim',        hex:'#4A6FA5', temp:'frio',   neutro:true,  estaciones:['verano','primavera'],    clima:['frio','templado','calor'] },
-  { id:'cuero',      nombre:'Marrón cuero', hex:'#8B5E3C', temp:'calido', neutro:true,  estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
-  { id:'oliva',      nombre:'Verde oliva',  hex:'#6B7043', temp:'calido', neutro:true,  estaciones:['otono'],                 clima:['frio','templado','calor'] },
-  { id:'taupe',      nombre:'Taupe',        hex:'#8A7F72', temp:'neutro', neutro:true,  estaciones:['verano','otono'],        clima:['templado','calor'] },
+  { id:'grisMedio',  nombre:'Gris medio',   hex:'#8A9098', temp:'frio',   neutro:true,  estaciones:['verano','invierno'] },
+  { id:'azulAcero',  nombre:'Azul acero',   hex:'#55708C', temp:'frio',   neutro:true,  estaciones:['verano'] },
+  { id:'denim',      nombre:'Denim',        hex:'#4A6FA5', temp:'frio',   neutro:true,  estaciones:['verano','primavera'] },
+  { id:'cuero',      nombre:'Marrón cuero', hex:'#8B5E3C', temp:'calido', neutro:true,  estaciones:['otono','primavera'] },
+  { id:'oliva',      nombre:'Verde oliva',  hex:'#6B7043', temp:'calido', neutro:true,  estaciones:['otono'] },
+  { id:'taupe',      nombre:'Taupe',        hex:'#8A7F72', temp:'neutro', neutro:true,  estaciones:['verano','otono'] },
 
   // --- neutros claros ---
-  { id:'blanco',     nombre:'Blanco',       hex:'#F7F7F5', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['calor','templado'] },
-  { id:'crema',      nombre:'Crema',        hex:'#F0E7D6', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['calor','templado'] },
-  { id:'beige',      nombre:'Beige arena',  hex:'#DCCBB0', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['calor','templado'] },
-  { id:'camel',      nombre:'Camel',        hex:'#C29A6B', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['frio','templado','calor'] },
-  { id:'grisClaro',  nombre:'Gris claro',   hex:'#C7CCD2', temp:'frio',   neutro:true,  estaciones:['verano','invierno'],     clima:['calor','templado'] },
-  { id:'celeste',    nombre:'Celeste',      hex:'#BCD3E8', temp:'frio',   neutro:true,  estaciones:['verano','primavera'],    clima:['calor','templado'] },
-  { id:'hielo',      nombre:'Azul hielo',   hex:'#DCE8F2', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['calor','templado'] },
+  { id:'blanco',     nombre:'Blanco',       hex:'#F7F7F5', temp:'frio',   neutro:true,  estaciones:['invierno','verano'] },
+  { id:'crema',      nombre:'Crema',        hex:'#F0E7D6', temp:'calido', neutro:true,  estaciones:['primavera','otono'] },
+  { id:'beige',      nombre:'Beige arena',  hex:'#DCCBB0', temp:'calido', neutro:true,  estaciones:['primavera','otono'] },
+  { id:'camel',      nombre:'Camel',        hex:'#C29A6B', temp:'calido', neutro:true,  estaciones:['primavera','otono'] },
+  { id:'grisClaro',  nombre:'Gris claro',   hex:'#C7CCD2', temp:'frio',   neutro:true,  estaciones:['verano','invierno'] },
+  { id:'celeste',    nombre:'Celeste',      hex:'#BCD3E8', temp:'frio',   neutro:true,  estaciones:['verano','primavera'] },
+  { id:'hielo',      nombre:'Azul hielo',   hex:'#DCE8F2', temp:'frio',   neutro:true,  estaciones:['invierno','verano'] },
 
   // --- acentos fríos ---
-  { id:'burdeos',    nombre:'Burdeos',      hex:'#6E2639', temp:'frio',   neutro:false, estaciones:['invierno','otono'],      clima:['frio','templado'] },
-  { id:'esmeralda',  nombre:'Esmeralda',    hex:'#1F7A5C', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['templado','calor'] },
-  { id:'cobalto',    nombre:'Azul cobalto', hex:'#2A5DB0', temp:'frio',   neutro:false, estaciones:['invierno','primavera'],  clima:['templado','calor'] },
-  { id:'ciruela',    nombre:'Ciruela',      hex:'#5A3A52', temp:'frio',   neutro:false, estaciones:['invierno','verano'],     clima:['frio','templado'] },
-  { id:'rosaPolvo',  nombre:'Rosa polvo',   hex:'#C99EA4', temp:'frio',   neutro:false, estaciones:['verano'],                clima:['calor','templado'] },
-  { id:'lavanda',    nombre:'Lavanda',      hex:'#9A8CB8', temp:'frio',   neutro:false, estaciones:['verano'],                clima:['calor','templado'] },
-  { id:'rojo',       nombre:'Rojo',         hex:'#C0242C', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['frio','templado','calor'] },
-  { id:'fucsia',     nombre:'Fucsia',       hex:'#B03A6E', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['calor','templado'] },
+  { id:'burdeos',    nombre:'Burdeos',      hex:'#6E2639', temp:'frio',   neutro:false, estaciones:['invierno','otono'] },
+  { id:'esmeralda',  nombre:'Esmeralda',    hex:'#1F7A5C', temp:'frio',   neutro:false, estaciones:['invierno'] },
+  { id:'cobalto',    nombre:'Azul cobalto', hex:'#2A5DB0', temp:'frio',   neutro:false, estaciones:['invierno','primavera'] },
+  { id:'ciruela',    nombre:'Ciruela',      hex:'#5A3A52', temp:'frio',   neutro:false, estaciones:['invierno','verano'] },
+  { id:'rosaPolvo',  nombre:'Rosa polvo',   hex:'#C99EA4', temp:'frio',   neutro:false, estaciones:['verano'] },
+  { id:'lavanda',    nombre:'Lavanda',      hex:'#9A8CB8', temp:'frio',   neutro:false, estaciones:['verano'] },
+  { id:'rojo',       nombre:'Rojo',         hex:'#C0242C', temp:'frio',   neutro:false, estaciones:['invierno'] },
+  { id:'fucsia',     nombre:'Fucsia',       hex:'#B03A6E', temp:'frio',   neutro:false, estaciones:['invierno'] },
 
   // --- acentos cálidos ---
-  { id:'terracota',  nombre:'Terracota',    hex:'#B4573A', temp:'calido', neutro:false, estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
-  { id:'oxido',      nombre:'Óxido',        hex:'#9C4A2A', temp:'calido', neutro:false, estaciones:['otono'],                 clima:['frio','templado'] },
-  { id:'mostaza',    nombre:'Mostaza',      hex:'#C79A2E', temp:'calido', neutro:false, estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
-  { id:'coral',      nombre:'Coral',        hex:'#E8836A', temp:'calido', neutro:false, estaciones:['primavera'],             clima:['calor','templado'] },
-  { id:'turquesa',   nombre:'Turquesa',     hex:'#2E8B8B', temp:'calido', neutro:false, estaciones:['primavera'],             clima:['calor','templado'] },
-  { id:'salvia',     nombre:'Verde salvia', hex:'#A3B18A', temp:'neutro', neutro:false, estaciones:['verano','primavera'],    clima:['calor','templado'] },
+  { id:'terracota',  nombre:'Terracota',    hex:'#B4573A', temp:'calido', neutro:false, estaciones:['otono','primavera'] },
+  { id:'oxido',      nombre:'Óxido',        hex:'#9C4A2A', temp:'calido', neutro:false, estaciones:['otono'] },
+  { id:'mostaza',    nombre:'Mostaza',      hex:'#C79A2E', temp:'calido', neutro:false, estaciones:['otono','primavera'] },
+  { id:'coral',      nombre:'Coral',        hex:'#E8836A', temp:'calido', neutro:false, estaciones:['primavera'] },
+  { id:'turquesa',   nombre:'Turquesa',     hex:'#2E8B8B', temp:'calido', neutro:false, estaciones:['primavera'] },
+  { id:'salvia',     nombre:'Verde salvia', hex:'#A3B18A', temp:'neutro', neutro:false, estaciones:['verano','primavera'] },
 ];
 
 /* --- derivados: HSL + luminancia, calculados una sola vez --- */
@@ -498,12 +496,6 @@ const OCASIONES = {
   },
 };
 
-const CLIMAS = [
-  { id:'calor',    nombre:'Calor' },
-  { id:'templado', nombre:'Templado' },
-  { id:'frio',     nombre:'Frío' },
-];
-
 const ESTACIONES = {
   primavera: { nombre:'Primavera', desc:'Cálido, claro y limpio. Te favorecen los colores con luz: camel, coral, crema, turquesa. Lo apagado y lo muy oscuro te apaga la cara.' },
   verano:    { nombre:'Verano',    desc:'Frío y suave. Te favorecen los tonos lavados: azul acero, gris medio, rosa polvo, salvia. Los colores estridentes te comen.' },
@@ -573,7 +565,7 @@ function conflictoPar(a, b, slotA, slotB, ocasion) {
   return null;
 }
 
-function evaluar(arriba, pantalon, ocasion, estacion, clima) {
+function evaluar(arriba, pantalon, ocasion, estacion) {
   const prendas = [
     { c: arriba,   slot:'arriba' },
     { c: pantalon, slot:'pantalon' },
@@ -629,10 +621,6 @@ function evaluar(arriba, pantalon, ocasion, estacion, clima) {
     score -= fuera * 4;
   }
 
-  prendas.forEach(p => {
-    if (p.c.clima.includes(clima)) score += 3; else score -= 4;
-  });
-
   if (esClasico) {
     score += 22;
     especificas.length = 0;   // el clásico se explica solo
@@ -661,7 +649,7 @@ function evaluar(arriba, pantalon, ocasion, estacion, clima) {
 }
 
 /* Genera los mejores outfits partiendo de una prenda fija. */
-function sugerir(slotBase, colorBase, ocasion, estacion, clima) {
+function sugerir(slotBase, colorBase, ocasion, estacion) {
   const oc = OCASIONES[ocasion];
   const opciones = {};
   SLOTS.forEach(s => {
@@ -671,7 +659,7 @@ function sugerir(slotBase, colorBase, ocasion, estacion, clima) {
   const todos = [];
   opciones.arriba.forEach(a =>
     opciones.pantalon.forEach(p => {
-      const r = evaluar(a, p, ocasion, estacion, clima);
+      const r = evaluar(a, p, ocasion, estacion);
       if (r) todos.push(r);
     }));
 
@@ -748,23 +736,14 @@ const estado = {
   ocasion: 'oficina',
   slot: 'pantalon',
   color: 'marino',
-  clima: climaPorDefecto(),
   pantalla: 'hoy',
 };
-
-function climaPorDefecto() {
-  // hemisferio sur (Argentina): dic-feb calor, jun-ago frío, resto templado
-  const m = new Date().getMonth();
-  if (m === 11 || m <= 1) return 'calor';
-  if (m >= 5 && m <= 7)   return 'frio';
-  return 'templado';
-}
 
 function guardar() {
   try {
     localStorage.setItem(CLAVE, JSON.stringify({
       estacion: estado.estacion, ocasion: estado.ocasion,
-      slot: estado.slot, color: estado.color, clima: estado.clima,
+      slot: estado.slot, color: estado.color,
     }));
   } catch (e) { /* modo privado de Safari: seguimos sin guardar */ }
 }
@@ -777,7 +756,6 @@ function cargar() {
     if (d.ocasion && OCASIONES[d.ocasion])    estado.ocasion  = d.ocasion;
     if (d.slot && SLOTS.some(s => s.id === d.slot)) estado.slot = d.slot;
     if (d.color && PORID[d.color])            estado.color    = d.color;
-    if (d.clima && CLIMAS.some(c => c.id === d.clima)) estado.clima = d.clima;
     return true;
   } catch (e) { return false; }
 }
@@ -879,7 +857,7 @@ function tarjetaOutfit(r, i) {
 }
 
 function pintarResultados(scroll) {
-  const res = sugerir(estado.slot, PORID[estado.color], estado.ocasion, estado.estacion, estado.clima);
+  const res = sugerir(estado.slot, PORID[estado.color], estado.ocasion, estado.estacion);
   const cont = $('bloqueResultados');
 
   if (!res.length) {
@@ -925,9 +903,6 @@ function pintarHoy() {
     Object.keys(OCASIONES).map(id => ({ id, nombre: OCASIONES[id].nombre })),
     estado.ocasion,
     id => { estado.ocasion = id; guardar(); pintarHoy(); pintarResultados(false); });
-
-  pintarChips($('chipsClima'), CLIMAS, estado.clima,
-    id => { estado.clima = id; guardar(); pintarHoy(); pintarResultados(false); });
 
   pintarChips($('chipsSlot'),
     SLOTS.map(s => ({ id: s.id, nombre: s.corto })),
