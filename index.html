@@ -9,293 +9,312 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="¿Combina?">
-<meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231F2A44'/%3E%3Ccircle cx='66' cy='66' r='30' fill='%23F0E7D6'/%3E%3Ccircle cx='114' cy='66' r='30' fill='%23C29A6B'/%3E%3Ccircle cx='90' cy='114' r='30' fill='%236E2639'/%3E%3C/svg%3E">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F2A44'/%3E%3Ccircle cx='23' cy='23' r='11' fill='%23F0E7D6'/%3E%3Ccircle cx='41' cy='23' r='11' fill='%23C29A6B'/%3E%3Ccircle cx='32' cy='41' r='11' fill='%236E2639'/%3E%3C/svg%3E">
-<link rel="manifest" href='data:application/manifest+json,{"name":"%C2%BFCombina%3F","short_name":"%C2%BFCombina%3F","display":"standalone","start_url":".","background_color":"%23f6f5f2","theme_color":"%231F2A44"}'>
+<link rel="manifest" href='data:application/manifest+json,{"name":"%C2%BFCombina%3F","short_name":"%C2%BFCombina%3F","display":"standalone","start_url":".","background_color":"%23fbfbfd","theme_color":"%23fbfbfd"}'>
 
 <style>
   :root {
-    --bg: #f6f5f2;
+    --bg: #fbfbfd;
     --card: #ffffff;
-    --card-2: #efeeea;
-    --txt: #17191d;
-    --txt-dim: #6b7078;
-    --line: #dedcd6;
-    --accent: #1F2A44;
-    --accent-txt: #ffffff;
-    --ok: #2f7a52;
-    --warn: #9a5b1e;
-    --sw-borde: rgba(0,0,0,.20);
-    --radius: 16px;
-    --pad: 16px;
+    --fill: rgba(118,118,128,.10);   /* relleno de controles, como iOS */
+    --sep: rgba(60,60,67,.16);       /* separadores hairline */
+    --txt: #1d1d1f;
+    --txt-2: #6e6e73;
+    --txt-3: #86868b;
+    --azul: #0071e3;
+    --azul-txt: #ffffff;
+    --sw-borde: rgba(0,0,0,.12);
+    --sombra-pill: 0 3px 8px rgba(0,0,0,.10), 0 1px 1px rgba(0,0,0,.04);
+    --r-card: 18px;
+    --r-ctrl: 10px;
+    --pad: 20px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #14161a;
-      --card: #1e2127;
-      --card-2: #262a31;
-      --txt: #eceef1;
-      --txt-dim: #9aa1ab;
-      --line: #333841;
-      --accent: #8fb0e8;
-      --accent-txt: #10131a;
-      --ok: #6bcf9a;
-      --sw-borde: rgba(255,255,255,.32);
-      --warn: #e0a869;
+      --bg: #000000;
+      --card: #1c1c1e;
+      --fill: rgba(118,118,128,.24);
+      --sep: rgba(84,84,88,.45);
+      --txt: #f5f5f7;
+      --txt-2: #98989d;
+      --txt-3: #8e8e93;
+      --azul: #0a84ff;
+      --azul-txt: #ffffff;
+      --sw-borde: rgba(255,255,255,.28);
+      --sombra-pill: 0 3px 8px rgba(0,0,0,.5);
     }
   }
 
   * { box-sizing: border-box; }
-  html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body {
     margin: 0;
     min-height: 100dvh;
     background: var(--bg);
     color: var(--txt);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
     font-size: 17px;
-    line-height: 1.4;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: contain;
   }
-  button { font: inherit; color: inherit; touch-action: manipulation; cursor: pointer; }
+  button { font: inherit; color: inherit; touch-action: manipulation; cursor: pointer; letter-spacing: inherit; }
+  svg { display: block; }
 
   /* ---------- estructura ---------- */
   header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    padding: calc(env(safe-area-inset-top) + 10px) calc(env(safe-area-inset-right) + var(--pad)) 10px calc(env(safe-area-inset-left) + var(--pad));
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    position: sticky; top: 0; z-index: 20;
+    padding: calc(env(safe-area-inset-top) + 12px) calc(env(safe-area-inset-right) + var(--pad)) 12px calc(env(safe-area-inset-left) + var(--pad));
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid var(--sep);
+    display: flex; align-items: center; gap: 12px;
   }
-  header h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; }
-  header .sub { display: block; font-size: 12px; font-weight: 500; color: var(--txt-dim); letter-spacing: 0; }
+  header h1 {
+    font-size: 22px; font-weight: 600; margin: 0;
+    letter-spacing: -0.025em; flex: 1;
+  }
+  header .sub {
+    display: block; margin-top: 1px;
+    font-size: 13px; font-weight: 400; color: var(--txt-2);
+    letter-spacing: -0.005em;
+  }
   .icon-btn {
     min-width: 44px; min-height: 44px;
     display: grid; place-items: center;
-    background: none; border: 0; font-size: 20px; padding: 0;
+    background: none; border: 0; padding: 0;
+    color: var(--azul);
   }
 
   main {
-    padding: 14px calc(env(safe-area-inset-right) + var(--pad)) 24px calc(env(safe-area-inset-left) + var(--pad));
-    max-width: 620px;
-    margin: 0 auto;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 92px);
+    padding: 20px calc(env(safe-area-inset-right) + var(--pad)) 24px calc(env(safe-area-inset-left) + var(--pad));
+    max-width: 640px; margin: 0 auto;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 96px);
   }
   .pantalla[hidden] { display: none; }
 
   nav.tabs {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 30;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
     display: flex;
-    background: color-mix(in srgb, var(--bg) 90%, transparent);
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
-    border-top: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 0.5px solid var(--sep);
     padding-bottom: env(safe-area-inset-bottom);
   }
   nav.tabs button {
-    flex: 1;
-    min-height: 52px;
+    flex: 1; min-height: 50px;
     background: none; border: 0;
-    font-size: 12px; font-weight: 600;
-    color: var(--txt-dim);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    font-size: 10px; font-weight: 500; letter-spacing: 0;
+    color: var(--txt-3);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   }
-  nav.tabs button .gl { font-size: 20px; line-height: 1; }
-  nav.tabs button[aria-selected="true"] { color: var(--txt); }
+  nav.tabs button[aria-selected="true"] { color: var(--azul); }
 
-  /* ---------- bloques ---------- */
-  .bloque { margin-bottom: 18px; }
+  /* ---------- bloques y rótulos ---------- */
+  .bloque { margin-bottom: 26px; }
   .rotulo {
-    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
-    text-transform: uppercase; color: var(--txt-dim);
-    margin: 0 0 8px 2px;
+    font-size: 13px; font-weight: 400; color: var(--txt-2);
+    margin: 0 0 8px 2px; letter-spacing: -0.005em;
   }
 
-  .chips { display: flex; gap: 8px; }
-  .chips button {
-    flex: 1;
-    min-height: 48px;
-    border-radius: 12px;
-    border: 1.5px solid var(--line);
+  /* ---------- control segmentado, estilo iOS ---------- */
+  .seg {
+    display: flex; gap: 2px;
+    background: var(--fill);
+    border-radius: var(--r-ctrl);
+    padding: 2px;
+  }
+  .seg button {
+    flex: 1; min-height: 44px;
+    border: 0; border-radius: 8px;
+    background: transparent;
+    color: var(--txt);
+    font-size: 15px; font-weight: 400;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .18s ease, box-shadow .18s ease;
+  }
+  .seg button[aria-pressed="true"] {
     background: var(--card);
-    font-weight: 600;
-    font-size: 15px;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
+    box-shadow: var(--sombra-pill);
+    font-weight: 590;
   }
-  .chips button[aria-pressed="true"] {
-    background: var(--accent);
-    color: var(--accent-txt);
-    border-color: var(--accent);
-  }
-  .chips.mini button { min-height: 40px; font-size: 13px; font-weight: 600; }
 
-  /* ---------- swatches ---------- */
+  /* ---------- muestras de color ---------- */
   .grilla {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 14px 8px;
   }
   .sw {
     border: 0; background: none; padding: 0;
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
     min-height: 44px;
   }
   .sw .disco {
-    width: 56px; height: 56px; border-radius: 50%;
-    border: 1.5px solid var(--sw-borde);
-    position: relative;
-    transition: transform .12s ease;
+    width: 54px; height: 54px; border-radius: 50%;
+    /* 1px y no hairline: es el contorno de una muestra, tiene que verse
+       tanto en el blanco sobre fondo claro como en el negro sobre negro */
+    border: 1px solid var(--sw-borde);
+    transition: box-shadow .18s ease;
   }
   .sw[aria-pressed="true"] .disco {
-    transform: scale(1.04);
-    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5.5px var(--accent);
-  }
-  .sw .disco .estrella {
-    position: absolute; top: -3px; right: -3px;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--card); color: var(--txt);
-    font-size: 10px; line-height: 18px; text-align: center;
-    border: 1px solid var(--line);
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--azul);
   }
   .sw .nom {
-    font-size: 10.5px; line-height: 1.15; text-align: center;
-    color: var(--txt-dim); font-weight: 600;
-    max-width: 70px;
+    font-size: 11px; line-height: 1.25; text-align: center;
+    color: var(--txt-2); font-weight: 400; letter-spacing: -0.005em;
+    max-width: 74px;
   }
+  .sw[aria-pressed="true"] .nom { color: var(--txt); font-weight: 590; }
+  /* punto discreto en los colores de tu paleta, sin estrellitas */
+  .sw .nom::after {
+    content: ''; display: block;
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--azul); margin: 4px auto 0;
+    visibility: hidden;
+  }
+  .sw.en-paleta .nom::after { visibility: visible; }
 
-  /* ---------- tarjetas de outfit ---------- */
+  /* ---------- tarjetas de combinación ---------- */
   .outfit {
     background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border-radius: var(--r-card);
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    border: 0.5px solid var(--sep);
   }
   .outfit > .cab {
-    width: 100%;
+    width: 100%; min-height: 48px;
     border: 0; background: none; text-align: left;
-    padding: 12px 14px 10px;
-    display: flex; align-items: center; gap: 8px;
+    padding: 14px 16px 12px;
+    display: flex; align-items: center; gap: 10px;
   }
-  .outfit .titulo { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
+  .outfit .titulo {
+    font-size: 17px; font-weight: 590; letter-spacing: -0.02em; flex: 1;
+  }
+  .outfit .chev { color: var(--txt-3); transition: transform .2s ease; }
+  .outfit.abierta .chev { transform: rotate(90deg); }
   .badge {
-    font-size: 11px; font-weight: 700;
-    padding: 3px 8px; border-radius: 999px;
-    background: color-mix(in srgb, var(--ok) 18%, transparent);
-    color: var(--ok);
+    font-size: 12px; font-weight: 510; letter-spacing: -0.005em;
+    padding: 3px 9px; border-radius: 999px;
+    background: var(--fill); color: var(--txt-2);
     white-space: nowrap;
   }
-  /* las dos prendas, grandes y una al lado de la otra */
+
   .par { display: grid; grid-template-columns: 1fr 1fr; }
   .par .mitad {
-    min-height: 150px;
+    min-height: 160px;
     display: flex; flex-direction: column; justify-content: flex-end;
-    padding: 12px 14px;
+    padding: 14px 16px;
   }
-  /* una línea fina entre las dos para que dos colores parecidos no se fundan */
-  .par .mitad + .mitad { box-shadow: inset 1px 0 0 var(--sw-borde); }
+  .par .mitad + .mitad { box-shadow: inset 0.5px 0 0 var(--sw-borde); }
   .par .slot {
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .06em;
-    opacity: .75;
+    font-size: 12px; font-weight: 400; opacity: .7;
+    letter-spacing: -0.005em; margin-bottom: 1px;
   }
-  .par .cnom { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+  .par .cnom {
+    font-size: 20px; font-weight: 590;
+    letter-spacing: -0.025em; line-height: 1.15;
+  }
+
   .porque {
-    padding: 10px 14px 14px;
-    font-size: 13.5px;
-    color: var(--txt-dim);
-    line-height: 1.45;
+    padding: 14px 16px 16px;
+    margin: 0;
+    font-size: 15px; color: var(--txt-2); line-height: 1.45;
   }
   .detalle {
-    border-top: 1px solid var(--line);
-    background: var(--card-2);
-    padding: 12px 14px;
-    font-size: 13.5px;
-    color: var(--txt-dim);
+    border-top: 0.5px solid var(--sep);
+    padding: 14px 16px;
+    font-size: 14px; color: var(--txt-2); line-height: 1.5;
   }
-  .detalle b { color: var(--txt); }
+  .detalle b { color: var(--txt); font-weight: 510; }
   .detalle[hidden] { display: none; }
 
-  .evitar { display: flex; flex-direction: column; gap: 8px; }
+  /* ---------- evitar ---------- */
+  .evitar { display: flex; flex-direction: column; gap: 10px; }
   .evitar .fila {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 14px;
     background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 9px 12px;
+    border: 0.5px solid var(--sep);
+    border-radius: 14px;
+    padding: 12px 14px;
   }
-  .evitar .muestra { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--sw-borde); flex: none; }
-  .evitar .txt { font-size: 13.5px; }
-  .evitar .txt b { display: block; font-size: 14.5px; }
-  .evitar .txt span { color: var(--warn); }
+  .evitar .muestra {
+    width: 44px; height: 44px; border-radius: 10px;
+    border: 1px solid var(--sw-borde); flex: none;
+  }
+  .evitar .txt { font-size: 15px; }
+  .evitar .txt b { display: block; font-weight: 510; letter-spacing: -0.01em; }
+  .evitar .txt span { color: var(--txt-2); font-size: 14px; }
 
   .vacio {
-    background: var(--card); border: 1px dashed var(--line);
-    border-radius: var(--radius); padding: 20px 16px;
-    text-align: center; color: var(--txt-dim); font-size: 14.5px;
+    background: var(--card); border: 0.5px solid var(--sep);
+    border-radius: var(--r-card); padding: 26px 20px;
+    text-align: center; color: var(--txt-2); font-size: 15px;
   }
 
   /* ---------- test ---------- */
-  .preg { margin-bottom: 22px; }
-  .preg h2 { font-size: 17px; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .preg { margin-bottom: 30px; }
+  .preg h2 {
+    font-size: 19px; font-weight: 590; margin: 0 0 12px;
+    letter-spacing: -0.02em; line-height: 1.3;
+  }
   .opts { display: flex; flex-direction: column; gap: 8px; }
   .opts button {
-    min-height: 52px;
-    text-align: left;
-    padding: 11px 14px;
-    border-radius: 12px;
-    border: 1.5px solid var(--line);
+    min-height: 52px; text-align: left;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 0.5px solid var(--sep);
     background: var(--card);
-    font-size: 15px; font-weight: 500;
+    font-size: 16px; font-weight: 400;
+    transition: border-color .15s ease, background .15s ease;
   }
   .opts button[aria-pressed="true"] {
-    border-color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 14%, var(--card));
-    font-weight: 700;
+    border-color: var(--azul);
+    box-shadow: inset 0 0 0 1px var(--azul);
+    font-weight: 510;
   }
   .btn-grande {
-    width: 100%; min-height: 52px;
-    border-radius: 12px; border: 0;
-    background: var(--accent); color: var(--accent-txt);
-    font-size: 16px; font-weight: 700;
+    width: 100%; min-height: 50px;
+    border-radius: 999px; border: 0;
+    background: var(--azul); color: var(--azul-txt);
+    font-size: 17px; font-weight: 510; letter-spacing: -0.01em;
   }
-  .btn-grande[disabled] { opacity: .4; }
+  .btn-grande[disabled] { opacity: .35; }
   .btn-texto {
-    width: 100%; min-height: 48px; margin-top: 10px;
-    border: 0; background: none; color: var(--txt-dim);
-    font-size: 14.5px; font-weight: 600;
+    width: 100%; min-height: 48px; margin-top: 6px;
+    border: 0; background: none; color: var(--azul);
+    font-size: 16px; font-weight: 400;
   }
 
-  .estacion-card {
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+  /* ---------- mi paleta ---------- */
+  .estacion-card { margin-bottom: 30px; }
+  .estacion-card h2 {
+    margin: 0 0 8px;
+    font-size: 34px; font-weight: 600; letter-spacing: -0.035em; line-height: 1.1;
   }
-  .estacion-card h2 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.02em; }
-  .estacion-card p { margin: 0; font-size: 14.5px; color: var(--txt-dim); }
-  .nota { font-size: 13px; color: var(--txt-dim); line-height: 1.5; }
-  a { color: var(--accent); }
+  .estacion-card p { margin: 0; font-size: 16px; color: var(--txt-2); line-height: 1.5; }
+  .nota { font-size: 14px; color: var(--txt-2); line-height: 1.55; }
+  a { color: var(--azul); }
 </style>
 
 <header>
   <h1 id="tituloApp">¿Combina?<span class="sub" id="subTitulo">Elegí una prenda y mirá con qué va</span></h1>
-  <button class="icon-btn" id="btnTest" title="Rehacer el test de paleta" aria-label="Rehacer el test de paleta">⚙️</button>
+  <button class="icon-btn" id="btnTest" title="Rehacer el test de paleta" aria-label="Rehacer el test de paleta">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M4 7h9M17 7h3M4 17h3M11 17h9"/>
+      <circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/>
+    </svg>
+  </button>
 </header>
 
 <main>
@@ -303,17 +322,17 @@
   <section class="pantalla" id="pHoy">
     <div class="bloque">
       <p class="rotulo">¿A dónde vas?</p>
-      <div class="chips" id="chipsOcasion"></div>
+      <div class="seg" id="chipsOcasion"></div>
     </div>
 
     <div class="bloque">
       <p class="rotulo">Clima de hoy</p>
-      <div class="chips mini" id="chipsClima"></div>
+      <div class="seg" id="chipsClima"></div>
     </div>
 
     <div class="bloque">
       <p class="rotulo">Ya tengo puesto…</p>
-      <div class="chips" id="chipsSlot"></div>
+      <div class="seg" id="chipsSlot"></div>
     </div>
 
     <div class="bloque">
@@ -332,7 +351,7 @@
   <section class="pantalla" id="pTest" hidden>
     <p class="nota" style="margin-bottom:18px">
       Cuatro preguntas rápidas para saber qué colores te favorecen la cara.
-      Se guarda en el celular; podés rehacerlo cuando quieras con el ⚙️ de arriba.
+      Se guarda en el celular; podés rehacerlo cuando quieras desde el botón de arriba a la derecha.
     </p>
     <div id="preguntas"></div>
     <button class="btn-grande" id="btnVerResultado" disabled>Ver mi paleta</button>
@@ -341,8 +360,17 @@
 </main>
 
 <nav class="tabs">
-  <button id="tabHoy" aria-selected="true"><span class="gl">👔</span>Hoy</button>
-  <button id="tabPaleta" aria-selected="false"><span class="gl">🎨</span>Mi paleta</button>
+  <button id="tabHoy" aria-selected="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+      <path d="M9 3.5 12 6l3-2.5 4.5 2.2a1 1 0 0 1 .55 1.05L19.5 11H16v8.5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V11H4.5l-.55-4.25A1 1 0 0 1 4.5 5.7Z"/>
+    </svg>Hoy
+  </button>
+  <button id="tabPaleta" aria-selected="false">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="7.6" r="1.5"/>
+      <circle cx="15.6" cy="10.6" r="1.5"/><circle cx="8.4" cy="10.6" r="1.5"/><circle cx="12" cy="15.4" r="1.5"/>
+    </svg>Mi paleta
+  </button>
 </nav>
 
 <script>
@@ -445,8 +473,8 @@ COLORES.forEach(c => {
 });
 
 const SLOTS = [
-  { id:'arriba',   nombre:'Arriba',   corto:'Arriba',   glifo:'👕', pregunta:'la remera, camisa o sweater' },
-  { id:'pantalon', nombre:'Pantalón', corto:'Pantalón', glifo:'👖', pregunta:'el pantalón' },
+  { id:'arriba',   nombre:'Arriba',   corto:'Arriba',   pregunta:'la remera, camisa o sweater' },
+  { id:'pantalon', nombre:'Pantalón', corto:'Pantalón', pregunta:'el pantalón' },
 ];
 
 /* =========================================================================
@@ -454,33 +482,33 @@ const SLOTS = [
    ========================================================================= */
 const OCASIONES = {
   oficina: {
-    nombre: 'Oficina', glifo: '💼',
+    nombre: 'Oficina',
     arriba:   ['blanco','celeste','crema','grisClaro','hielo','beige','rosaPolvo','lavanda','salvia','denim','marino','oliva','azulAcero','burdeos'],
     pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','azulAcero','taupe'],
   },
   elegante: {
-    nombre: 'Elegante', glifo: '🥂',
+    nombre: 'Elegante',
     arriba:   ['blanco','celeste','crema','grisClaro','hielo','rosaPolvo','lavanda'],
     pantalon: ['marino','carbon','negro','grisMedio','botella','burdeos','chocolate'],
   },
   informal: {
-    nombre: 'Informal', glifo: '🧢',
+    nombre: 'Informal',
     arriba:   COLORES.map(c => c.id),
     pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','denim','azulAcero','taupe','crema','burdeos','botella','cuero'],
   },
 };
 
 const CLIMAS = [
-  { id:'calor',    nombre:'Calor',    glifo:'☀️' },
-  { id:'templado', nombre:'Templado', glifo:'🍃' },
-  { id:'frio',     nombre:'Frío',     glifo:'❄️' },
+  { id:'calor',    nombre:'Calor' },
+  { id:'templado', nombre:'Templado' },
+  { id:'frio',     nombre:'Frío' },
 ];
 
 const ESTACIONES = {
-  primavera: { nombre:'Primavera', glifo:'🌤️', desc:'Cálido, claro y limpio. Te favorecen los colores con luz: camel, coral, crema, turquesa. Lo apagado y lo muy oscuro te apaga la cara.' },
-  verano:    { nombre:'Verano',    glifo:'🌊', desc:'Frío y suave. Te favorecen los tonos lavados: azul acero, gris medio, rosa polvo, salvia. Los colores estridentes te comen.' },
-  otono:     { nombre:'Otoño',     glifo:'🍂', desc:'Cálido y profundo. Te favorece la tierra: oliva, óxido, chocolate, mostaza, camel. El negro y los fríos brillantes te endurecen.' },
-  invierno:  { nombre:'Invierno',  glifo:'❄️', desc:'Frío, profundo y contrastado. Te favorecen negro, blanco puro, marino, burdeos, esmeralda. Los beiges y los pasteles apagados te desdibujan.' },
+  primavera: { nombre:'Primavera', desc:'Cálido, claro y limpio. Te favorecen los colores con luz: camel, coral, crema, turquesa. Lo apagado y lo muy oscuro te apaga la cara.' },
+  verano:    { nombre:'Verano',    desc:'Frío y suave. Te favorecen los tonos lavados: azul acero, gris medio, rosa polvo, salvia. Los colores estridentes te comen.' },
+  otono:     { nombre:'Otoño',     desc:'Cálido y profundo. Te favorece la tierra: oliva, óxido, chocolate, mostaza, camel. El negro y los fríos brillantes te endurecen.' },
+  invierno:  { nombre:'Invierno',  desc:'Frío, profundo y contrastado. Te favorecen negro, blanco puro, marino, burdeos, esmeralda. Los beiges y los pasteles apagados te desdibujan.' },
 };
 const OPUESTA = { primavera:'invierno', invierno:'primavera', verano:'otono', otono:'verano' };
 
@@ -783,7 +811,7 @@ function pintarChips(cont, items, activoId, onPick) {
     const b = document.createElement('button');
     b.type = 'button';
     b.setAttribute('aria-pressed', String(it.id === activoId));
-    b.innerHTML = (it.glifo ? '<span>' + it.glifo + '</span>' : '') + esc(it.nombre);
+    b.textContent = it.nombre;
     b.addEventListener('click', () => onPick(it.id));
     cont.appendChild(b);
   });
@@ -802,14 +830,13 @@ function pintarGrilla() {
     const c = PORID[id];
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'sw';
-    b.setAttribute('aria-pressed', String(id === estado.color));
-    b.setAttribute('aria-label', c.nombre);
     const enPaleta = estado.estacion && c.estaciones.includes(estado.estacion);
+    b.className = 'sw' + (enPaleta ? ' en-paleta' : '');
+    b.setAttribute('aria-pressed', String(id === estado.color));
+    b.setAttribute('aria-label', c.nombre + (enPaleta ? ', en tu paleta' : ''));
     b.innerHTML =
-      '<span class="disco" style="background:' + c.hex + '">' +
-        (enPaleta ? '<span class="estrella">★</span>' : '') +
-      '</span><span class="nom">' + esc(c.nombre) + '</span>';
+      '<span class="disco" style="background:' + c.hex + '"></span>' +
+      '<span class="nom">' + esc(c.nombre) + '</span>';
     b.addEventListener('click', () => {
       estado.color = id;
       guardar();
@@ -832,13 +859,15 @@ function tarjetaOutfit(r, i) {
     '</div>';
   }).join('');
 
-  const badge = r.enPaleta === 2 ? '<span class="badge">★ Tu paleta</span>' : '';
+  const badge = r.enPaleta === 2 ? '<span class="badge">Tu paleta</span>' : '';
   const hexes = SLOTS.map(s => esc(r[s.id].nombre) + ' <b>' + r[s.id].hex + '</b>').join(' · ');
+  const chevron = '<svg class="chev" width="9" height="15" viewBox="0 0 9 15" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+    '<path d="M1.5 1.5 7 7.5l-5.5 6"/></svg>';
 
   return '<article class="outfit">' +
     '<button class="cab" type="button" data-detalle="' + i + '">' +
-      '<span class="titulo">' + esc(r.etiqueta) + '</span>' + badge +
-      '<span style="color:var(--txt-dim);font-size:13px">ⓘ</span>' +
+      '<span class="titulo">' + esc(r.etiqueta) + '</span>' + badge + chevron +
     '</button>' +
     '<div class="par">' + mitades + '</div>' +
     '<p class="porque">' + esc(r.razon.charAt(0).toUpperCase() + r.razon.slice(1)) + '.</p>' +
@@ -864,6 +893,7 @@ function pintarResultados(scroll) {
       b.addEventListener('click', () => {
         const d = $('det' + b.dataset.detalle);
         d.hidden = !d.hidden;
+        b.closest('.outfit').classList.toggle('abierta', !d.hidden);
       });
     });
   }
@@ -892,7 +922,7 @@ function pintarResultados(scroll) {
 
 function pintarHoy() {
   pintarChips($('chipsOcasion'),
-    Object.keys(OCASIONES).map(id => ({ id, nombre: OCASIONES[id].nombre, glifo: OCASIONES[id].glifo })),
+    Object.keys(OCASIONES).map(id => ({ id, nombre: OCASIONES[id].nombre })),
     estado.ocasion,
     id => { estado.ocasion = id; guardar(); pintarHoy(); pintarResultados(false); });
 
@@ -900,7 +930,7 @@ function pintarHoy() {
     id => { estado.clima = id; guardar(); pintarHoy(); pintarResultados(false); });
 
   pintarChips($('chipsSlot'),
-    SLOTS.map(s => ({ id: s.id, nombre: s.corto, glifo: s.glifo })),
+    SLOTS.map(s => ({ id: s.id, nombre: s.corto })),
     estado.slot,
     id => { estado.slot = id; guardar(); pintarHoy(); pintarResultados(false); });
 
@@ -930,7 +960,7 @@ function pintarPaleta() {
 
   cont.innerHTML =
     '<div class="estacion-card">' +
-      '<h2>' + e.glifo + ' ' + esc(e.nombre) + '</h2>' +
+      '<h2>' + esc(e.nombre) + '</h2>' +
       '<p>' + esc(e.desc) + '</p>' +
     '</div>' +
     '<div class="bloque"><p class="rotulo">Tus colores</p>' + grilla(tuyos) + '</div>' +
