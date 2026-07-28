@@ -1,0 +1,1023 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¿Combina? · Paleta de color para hombres</title>
+<meta name="description" content="Elegí una prenda y la ocasión, y mirá qué colores combinan para vestirte.">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="¿Combina?">
+<meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231F2A44'/%3E%3Ccircle cx='66' cy='66' r='30' fill='%23F0E7D6'/%3E%3Ccircle cx='114' cy='66' r='30' fill='%23C29A6B'/%3E%3Ccircle cx='90' cy='114' r='30' fill='%236E2639'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F2A44'/%3E%3Ccircle cx='23' cy='23' r='11' fill='%23F0E7D6'/%3E%3Ccircle cx='41' cy='23' r='11' fill='%23C29A6B'/%3E%3Ccircle cx='32' cy='41' r='11' fill='%236E2639'/%3E%3C/svg%3E">
+<link rel="manifest" href='data:application/manifest+json,{"name":"%C2%BFCombina%3F","short_name":"%C2%BFCombina%3F","display":"standalone","start_url":".","background_color":"%23f6f5f2","theme_color":"%231F2A44"}'>
+
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --card-2: #efeeea;
+    --txt: #17191d;
+    --txt-dim: #6b7078;
+    --line: #dedcd6;
+    --accent: #1F2A44;
+    --accent-txt: #ffffff;
+    --ok: #2f7a52;
+    --warn: #9a5b1e;
+    --sw-borde: rgba(0,0,0,.20);
+    --radius: 16px;
+    --pad: 16px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --card: #1e2127;
+      --card-2: #262a31;
+      --txt: #eceef1;
+      --txt-dim: #9aa1ab;
+      --line: #333841;
+      --accent: #8fb0e8;
+      --accent-txt: #10131a;
+      --ok: #6bcf9a;
+      --sw-borde: rgba(255,255,255,.32);
+      --warn: #e0a869;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--txt);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: contain;
+  }
+  button { font: inherit; color: inherit; touch-action: manipulation; cursor: pointer; }
+
+  /* ---------- estructura ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding: calc(env(safe-area-inset-top) + 10px) calc(env(safe-area-inset-right) + var(--pad)) 10px calc(env(safe-area-inset-left) + var(--pad));
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  header h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: -0.02em; flex: 1; }
+  header .sub { display: block; font-size: 12px; font-weight: 500; color: var(--txt-dim); letter-spacing: 0; }
+  .icon-btn {
+    min-width: 44px; min-height: 44px;
+    display: grid; place-items: center;
+    background: none; border: 0; font-size: 20px; padding: 0;
+  }
+
+  main {
+    padding: 14px calc(env(safe-area-inset-right) + var(--pad)) 24px calc(env(safe-area-inset-left) + var(--pad));
+    max-width: 620px;
+    margin: 0 auto;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 92px);
+  }
+  .pantalla[hidden] { display: none; }
+
+  nav.tabs {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 30;
+    display: flex;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  nav.tabs button {
+    flex: 1;
+    min-height: 52px;
+    background: none; border: 0;
+    font-size: 12px; font-weight: 600;
+    color: var(--txt-dim);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  }
+  nav.tabs button .gl { font-size: 20px; line-height: 1; }
+  nav.tabs button[aria-selected="true"] { color: var(--txt); }
+
+  /* ---------- bloques ---------- */
+  .bloque { margin-bottom: 18px; }
+  .rotulo {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--txt-dim);
+    margin: 0 0 8px 2px;
+  }
+
+  .chips { display: flex; gap: 8px; }
+  .chips button {
+    flex: 1;
+    min-height: 48px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    font-weight: 600;
+    font-size: 15px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .chips button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-txt);
+    border-color: var(--accent);
+  }
+  .chips.mini button { min-height: 40px; font-size: 13px; font-weight: 600; }
+
+  /* ---------- swatches ---------- */
+  .grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+  }
+  .sw {
+    border: 0; background: none; padding: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    min-height: 44px;
+  }
+  .sw .disco {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1.5px solid var(--sw-borde);
+    position: relative;
+    transition: transform .12s ease;
+  }
+  .sw[aria-pressed="true"] .disco {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5.5px var(--accent);
+  }
+  .sw .disco .estrella {
+    position: absolute; top: -3px; right: -3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--card); color: var(--txt);
+    font-size: 10px; line-height: 18px; text-align: center;
+    border: 1px solid var(--line);
+  }
+  .sw .nom {
+    font-size: 10.5px; line-height: 1.15; text-align: center;
+    color: var(--txt-dim); font-weight: 600;
+    max-width: 70px;
+  }
+
+  /* ---------- tarjetas de outfit ---------- */
+  .outfit {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .outfit > .cab {
+    width: 100%;
+    border: 0; background: none; text-align: left;
+    padding: 12px 14px 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .outfit .titulo { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; flex: 1; }
+  .badge {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 8px; border-radius: 999px;
+    background: color-mix(in srgb, var(--ok) 18%, transparent);
+    color: var(--ok);
+    white-space: nowrap;
+  }
+  .barras { display: flex; flex-direction: column; }
+  .barra {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 14px;
+    min-height: 46px;
+  }
+  .barra .muestra {
+    width: 46px; height: 30px; border-radius: 8px;
+    border: 1px solid var(--sw-borde);
+    flex: none;
+  }
+  .barra .slot { font-size: 12px; font-weight: 700; color: var(--txt-dim); width: 66px; flex: none; text-transform: uppercase; letter-spacing: .04em; }
+  .barra .cnom { font-size: 15px; font-weight: 600; }
+  .porque {
+    padding: 10px 14px 14px;
+    font-size: 13.5px;
+    color: var(--txt-dim);
+    line-height: 1.45;
+  }
+  .detalle {
+    border-top: 1px solid var(--line);
+    background: var(--card-2);
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: var(--txt-dim);
+  }
+  .detalle b { color: var(--txt); }
+  .detalle[hidden] { display: none; }
+
+  .evitar { display: flex; flex-direction: column; gap: 8px; }
+  .evitar .fila {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 9px 12px;
+  }
+  .evitar .muestra { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--sw-borde); flex: none; }
+  .evitar .txt { font-size: 13.5px; }
+  .evitar .txt b { display: block; font-size: 14.5px; }
+  .evitar .txt span { color: var(--warn); }
+
+  .vacio {
+    background: var(--card); border: 1px dashed var(--line);
+    border-radius: var(--radius); padding: 20px 16px;
+    text-align: center; color: var(--txt-dim); font-size: 14.5px;
+  }
+
+  /* ---------- test ---------- */
+  .preg { margin-bottom: 22px; }
+  .preg h2 { font-size: 17px; margin: 0 0 10px; letter-spacing: -0.01em; }
+  .opts { display: flex; flex-direction: column; gap: 8px; }
+  .opts button {
+    min-height: 52px;
+    text-align: left;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    font-size: 15px; font-weight: 500;
+  }
+  .opts button[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, var(--card));
+    font-weight: 700;
+  }
+  .btn-grande {
+    width: 100%; min-height: 52px;
+    border-radius: 12px; border: 0;
+    background: var(--accent); color: var(--accent-txt);
+    font-size: 16px; font-weight: 700;
+  }
+  .btn-grande[disabled] { opacity: .4; }
+  .btn-texto {
+    width: 100%; min-height: 48px; margin-top: 10px;
+    border: 0; background: none; color: var(--txt-dim);
+    font-size: 14.5px; font-weight: 600;
+  }
+
+  .estacion-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+  }
+  .estacion-card h2 { margin: 0 0 4px; font-size: 22px; letter-spacing: -0.02em; }
+  .estacion-card p { margin: 0; font-size: 14.5px; color: var(--txt-dim); }
+  .nota { font-size: 13px; color: var(--txt-dim); line-height: 1.5; }
+  a { color: var(--accent); }
+</style>
+
+<header>
+  <h1 id="tituloApp">¿Combina?<span class="sub" id="subTitulo">Elegí una prenda y mirá con qué va</span></h1>
+  <button class="icon-btn" id="btnTest" title="Rehacer el test de paleta" aria-label="Rehacer el test de paleta">⚙️</button>
+</header>
+
+<main>
+  <!-- ================= HOY ================= -->
+  <section class="pantalla" id="pHoy">
+    <div class="bloque">
+      <p class="rotulo">¿A dónde vas?</p>
+      <div class="chips" id="chipsOcasion"></div>
+    </div>
+
+    <div class="bloque">
+      <p class="rotulo">Clima de hoy</p>
+      <div class="chips mini" id="chipsClima"></div>
+    </div>
+
+    <div class="bloque">
+      <p class="rotulo">Ya tengo puesto…</p>
+      <div class="chips" id="chipsSlot"></div>
+    </div>
+
+    <div class="bloque">
+      <p class="rotulo" id="rotuloColor">…de este color</p>
+      <div class="grilla" id="grillaColores"></div>
+    </div>
+
+    <div class="bloque" id="bloqueResultados"></div>
+    <div class="bloque" id="bloqueEvitar"></div>
+  </section>
+
+  <!-- ================= MI PALETA ================= -->
+  <section class="pantalla" id="pPaleta" hidden></section>
+
+  <!-- ================= TEST ================= -->
+  <section class="pantalla" id="pTest" hidden>
+    <p class="nota" style="margin-bottom:18px">
+      Cuatro preguntas rápidas para saber qué colores te favorecen la cara.
+      Se guarda en el celular; podés rehacerlo cuando quieras con el ⚙️ de arriba.
+    </p>
+    <div id="preguntas"></div>
+    <button class="btn-grande" id="btnVerResultado" disabled>Ver mi paleta</button>
+    <button class="btn-texto" id="btnSaltar">Saltar por ahora</button>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button id="tabHoy" aria-selected="true"><span class="gl">👔</span>Hoy</button>
+  <button id="tabPaleta" aria-selected="false"><span class="gl">🎨</span>Mi paleta</button>
+</nav>
+
+<script>
+/* =========================================================================
+   1. DATOS — catálogo de colores
+   ========================================================================= */
+
+/* temp:  calido | frio | neutro
+   neutro: true = sirve de base (poco saturado o clásico de fondo de armario)
+   estaciones: paletas personales donde ese color luce bien
+   clima: 'calor' | 'frio' | 'templado' — en qué temporada pide cancha        */
+const COLORES = [
+  // --- neutros oscuros ---
+  { id:'negro',      nombre:'Negro',        hex:'#16181D', temp:'frio',   neutro:true,  estaciones:['invierno'],              clima:['frio','templado'] },
+  { id:'marino',     nombre:'Azul marino',  hex:'#1F2A44', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['frio','templado','calor'] },
+  { id:'carbon',     nombre:'Gris carbón',  hex:'#3B4048', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['frio','templado'] },
+  { id:'chocolate',  nombre:'Chocolate',    hex:'#4A3728', temp:'calido', neutro:true,  estaciones:['otono'],                 clima:['frio','templado'] },
+  { id:'botella',    nombre:'Verde botella',hex:'#20463A', temp:'frio',   neutro:true,  estaciones:['invierno','otono'],      clima:['frio','templado'] },
+
+  // --- neutros medios ---
+  { id:'grisMedio',  nombre:'Gris medio',   hex:'#8A9098', temp:'frio',   neutro:true,  estaciones:['verano','invierno'],     clima:['frio','templado','calor'] },
+  { id:'azulAcero',  nombre:'Azul acero',   hex:'#55708C', temp:'frio',   neutro:true,  estaciones:['verano'],                clima:['templado','calor'] },
+  { id:'denim',      nombre:'Denim',        hex:'#4A6FA5', temp:'frio',   neutro:true,  estaciones:['verano','primavera'],    clima:['frio','templado','calor'] },
+  { id:'cuero',      nombre:'Marrón cuero', hex:'#8B5E3C', temp:'calido', neutro:true,  estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
+  { id:'oliva',      nombre:'Verde oliva',  hex:'#6B7043', temp:'calido', neutro:true,  estaciones:['otono'],                 clima:['frio','templado','calor'] },
+  { id:'taupe',      nombre:'Taupe',        hex:'#8A7F72', temp:'neutro', neutro:true,  estaciones:['verano','otono'],        clima:['templado','calor'] },
+
+  // --- neutros claros ---
+  { id:'blanco',     nombre:'Blanco',       hex:'#F7F7F5', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['calor','templado'] },
+  { id:'crema',      nombre:'Crema',        hex:'#F0E7D6', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['calor','templado'] },
+  { id:'beige',      nombre:'Beige arena',  hex:'#DCCBB0', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['calor','templado'] },
+  { id:'camel',      nombre:'Camel',        hex:'#C29A6B', temp:'calido', neutro:true,  estaciones:['primavera','otono'],     clima:['frio','templado','calor'] },
+  { id:'grisClaro',  nombre:'Gris claro',   hex:'#C7CCD2', temp:'frio',   neutro:true,  estaciones:['verano','invierno'],     clima:['calor','templado'] },
+  { id:'celeste',    nombre:'Celeste',      hex:'#BCD3E8', temp:'frio',   neutro:true,  estaciones:['verano','primavera'],    clima:['calor','templado'] },
+  { id:'hielo',      nombre:'Azul hielo',   hex:'#DCE8F2', temp:'frio',   neutro:true,  estaciones:['invierno','verano'],     clima:['calor','templado'] },
+
+  // --- acentos fríos ---
+  { id:'burdeos',    nombre:'Burdeos',      hex:'#6E2639', temp:'frio',   neutro:false, estaciones:['invierno','otono'],      clima:['frio','templado'] },
+  { id:'esmeralda',  nombre:'Esmeralda',    hex:'#1F7A5C', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['templado','calor'] },
+  { id:'cobalto',    nombre:'Azul cobalto', hex:'#2A5DB0', temp:'frio',   neutro:false, estaciones:['invierno','primavera'],  clima:['templado','calor'] },
+  { id:'ciruela',    nombre:'Ciruela',      hex:'#5A3A52', temp:'frio',   neutro:false, estaciones:['invierno','verano'],     clima:['frio','templado'] },
+  { id:'rosaPolvo',  nombre:'Rosa polvo',   hex:'#C99EA4', temp:'frio',   neutro:false, estaciones:['verano'],                clima:['calor','templado'] },
+  { id:'lavanda',    nombre:'Lavanda',      hex:'#9A8CB8', temp:'frio',   neutro:false, estaciones:['verano'],                clima:['calor','templado'] },
+  { id:'rojo',       nombre:'Rojo',         hex:'#C0242C', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['frio','templado','calor'] },
+  { id:'fucsia',     nombre:'Fucsia',       hex:'#B03A6E', temp:'frio',   neutro:false, estaciones:['invierno'],              clima:['calor','templado'] },
+
+  // --- acentos cálidos ---
+  { id:'terracota',  nombre:'Terracota',    hex:'#B4573A', temp:'calido', neutro:false, estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
+  { id:'oxido',      nombre:'Óxido',        hex:'#9C4A2A', temp:'calido', neutro:false, estaciones:['otono'],                 clima:['frio','templado'] },
+  { id:'mostaza',    nombre:'Mostaza',      hex:'#C79A2E', temp:'calido', neutro:false, estaciones:['otono','primavera'],     clima:['frio','templado','calor'] },
+  { id:'coral',      nombre:'Coral',        hex:'#E8836A', temp:'calido', neutro:false, estaciones:['primavera'],             clima:['calor','templado'] },
+  { id:'turquesa',   nombre:'Turquesa',     hex:'#2E8B8B', temp:'calido', neutro:false, estaciones:['primavera'],             clima:['calor','templado'] },
+  { id:'salvia',     nombre:'Verde salvia', hex:'#A3B18A', temp:'neutro', neutro:false, estaciones:['verano','primavera'],    clima:['calor','templado'] },
+];
+
+/* --- derivados: HSL + luminancia, calculados una sola vez --- */
+function hexToRgb(hex) {
+  return [1,3,5].map(i => parseInt(hex.substr(i,2),16));
+}
+function rgbToHsl(r,g,b) {
+  r/=255; g/=255; b/=255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  const l = (max+min)/2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max-min;
+    s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+    if (max === r)      h = ((g-b)/d + (g < b ? 6 : 0));
+    else if (max === g) h = ((b-r)/d + 2);
+    else                h = ((r-g)/d + 4);
+    h *= 60;
+  }
+  return [h, s*100, l*100];
+}
+/* luminancia percibida 0-100 (Rec. 601), más fiel al ojo que la L de HSL */
+function luma(r,g,b) { return (0.299*r + 0.587*g + 0.114*b) / 255 * 100; }
+
+const PORID = {};
+COLORES.forEach(c => {
+  const [r,g,b] = hexToRgb(c.hex);
+  const [h,s,l] = rgbToHsl(r,g,b);
+  c.h = h; c.s = s; c.l = l;
+  c.lum = luma(r,g,b);
+  c.acromatico = s < 12;          // gris/blanco/negro: el matiz no dice nada
+  c.acentoFuerte = s > 45;
+  PORID[c.id] = c;
+});
+
+const SLOTS = [
+  { id:'arriba',   nombre:'Arriba',   corto:'Arriba',   glifo:'👕', pregunta:'la remera, camisa o sweater' },
+  { id:'pantalon', nombre:'Pantalón', corto:'Pantalón', glifo:'👖', pregunta:'el pantalón' },
+  { id:'zapatos',  nombre:'Zapatos',  corto:'Zapatos',  glifo:'👞', pregunta:'los zapatos' },
+];
+
+/* =========================================================================
+   2. DATOS — qué color es admisible en cada slot según la ocasión
+   ========================================================================= */
+const OCASIONES = {
+  oficina: {
+    nombre: 'Oficina', glifo: '💼',
+    arriba:   ['blanco','celeste','crema','grisClaro','hielo','beige','rosaPolvo','lavanda','salvia','denim','marino','oliva','azulAcero','burdeos'],
+    pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','azulAcero','taupe'],
+    zapatos:  ['cuero','chocolate','negro','burdeos','camel'],
+  },
+  elegante: {
+    nombre: 'Elegante', glifo: '🥂',
+    arriba:   ['blanco','celeste','crema','grisClaro','hielo','rosaPolvo'],
+    pantalon: ['marino','carbon','negro','grisMedio','botella','burdeos'],
+    zapatos:  ['negro','chocolate','burdeos'],
+  },
+  informal: {
+    nombre: 'Informal', glifo: '🧢',
+    arriba:   COLORES.map(c => c.id),
+    pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','denim','azulAcero','taupe','crema','burdeos','botella','cuero'],
+    zapatos:  ['blanco','cuero','chocolate','negro','camel','oliva','grisMedio','burdeos','marino','beige','crema'],
+  },
+};
+
+const CLIMAS = [
+  { id:'calor',    nombre:'Calor',    glifo:'☀️' },
+  { id:'templado', nombre:'Templado', glifo:'🍃' },
+  { id:'frio',     nombre:'Frío',     glifo:'❄️' },
+];
+
+const ESTACIONES = {
+  primavera: { nombre:'Primavera', glifo:'🌤️', desc:'Cálido, claro y limpio. Te favorecen los colores con luz: camel, coral, crema, turquesa. Lo apagado y lo muy oscuro te apaga la cara.' },
+  verano:    { nombre:'Verano',    glifo:'🌊', desc:'Frío y suave. Te favorecen los tonos lavados: azul acero, gris medio, rosa polvo, salvia. Los colores estridentes te comen.' },
+  otono:     { nombre:'Otoño',     glifo:'🍂', desc:'Cálido y profundo. Te favorece la tierra: oliva, óxido, chocolate, mostaza, camel. El negro y los fríos brillantes te endurecen.' },
+  invierno:  { nombre:'Invierno',  glifo:'❄️', desc:'Frío, profundo y contrastado. Te favorecen negro, blanco puro, marino, burdeos, esmeralda. Los beiges y los pasteles apagados te desdibujan.' },
+};
+const OPUESTA = { primavera:'invierno', invierno:'primavera', verano:'otono', otono:'verano' };
+
+/* combinaciones clásicas de sastrería que siempre funcionan */
+const CLASICOS = new Set([
+  ['marino','blanco','chocolate'], ['marino','blanco','cuero'],
+  ['marino','celeste','chocolate'], ['marino','crema','cuero'],
+  ['carbon','blanco','negro'], ['grisMedio','blanco','negro'],
+  ['carbon','blanco','burdeos'], ['carbon','celeste','negro'],
+  ['oliva','crema','camel'], ['oliva','blanco','cuero'],
+  ['beige','blanco','cuero'], ['camel','marino','chocolate'],
+  ['chocolate','celeste','chocolate'], ['negro','blanco','negro'],
+  ['denim','blanco','blanco'], ['grisMedio','celeste','chocolate'],
+  ['marino','blanco','blanco'], ['beige','celeste','cuero'],
+].map(t => t.slice().sort().join('|')));
+
+const MARRONES = ['chocolate','cuero','camel','taupe','beige','crema'];
+const TIERRA = ['camel','chocolate','oliva','crema','beige','terracota','oxido','mostaza','cuero','taupe','botella'];
+
+/* =========================================================================
+   3. MOTOR — reglas de combinación
+   ========================================================================= */
+function distMatiz(a, b) {
+  if (a.acromatico || b.acromatico) return null;   // sin matiz que comparar
+  const d = Math.abs(a.h - b.h);
+  return Math.min(d, 360 - d);
+}
+
+/* Conflicto entre dos prendas concretas. Devuelve el motivo, o null si van bien.
+   Se usa tanto para descartar outfits como para armar la lista de "Evitar hoy". */
+function conflictoPar(a, b, slotA, slotB, ocasion) {
+  const ids = [a.id, b.id];
+  const tiene = id => ids.includes(id);
+  const slotDe = id => (a.id === id ? slotA : slotB);
+
+  if (tiene('negro') && MARRONES.some(m => tiene(m) && m !== 'crema' && m !== 'beige'))
+    return 'el negro con el marrón se pelean: ninguno de los dos manda';
+
+  if (tiene('negro') && tiene('marino')) {
+    if (ocasion !== 'informal')
+      return 'negro y azul marino juntos parecen un error de luz, no una decisión';
+  }
+
+  if (a.id === 'negro' && slotDe('negro') === 'zapatos' || b.id === 'negro' && slotDe('negro') === 'zapatos') {
+    const otro = a.id === 'negro' ? b : a;
+    const otroSlot = a.id === 'negro' ? slotB : slotA;
+    if (otroSlot === 'pantalon' && ocasion !== 'informal' &&
+        ['camel','beige','crema','taupe','cuero','chocolate'].includes(otro.id))
+      return 'zapato negro con pantalón claro o marrón corta la pierna y desentona';
+  }
+
+  // contraste entre arriba y pantalón: el error más común
+  if ((slotA === 'arriba' && slotB === 'pantalon') || (slotA === 'pantalon' && slotB === 'arriba')) {
+    const dL = Math.abs(a.lum - b.lum);
+    if (a.id === b.id) {
+      if (!a.neutro) return 'todo del mismo color saturado es disfraz, no outfit';
+    } else if (dL < 9) {
+      return 'quedan casi igual de claros: se lee como que no matcheaste, no como tono sobre tono';
+    } else {
+      const dh = distMatiz(a, b);
+      if (dL < 14 && dh !== null && dh > 20)
+        return 'mismo nivel de claridad pero matices distintos: el clásico "azul medio con gris medio"';
+    }
+  }
+
+  // dos colores muy parecidos pero no iguales, en cualquier par
+  if (a.id !== b.id && !a.acromatico && !b.acromatico) {
+    const dh = distMatiz(a, b);
+    if (dh !== null && dh < 18 && Math.abs(a.lum - b.lum) < 12 && Math.abs(a.s - b.s) < 18)
+      return 'son casi el mismo color: parece que uno destiñó';
+  }
+
+  return null;
+}
+
+function evaluar(arriba, pantalon, zapatos, ocasion, estacion, clima) {
+  const prendas = [
+    { c: arriba,   slot:'arriba' },
+    { c: pantalon, slot:'pantalon' },
+    { c: zapatos,  slot:'zapatos' },
+  ];
+
+  // ---- descartes duros ----
+  for (let i = 0; i < 3; i++) {
+    for (let j = i+1; j < 3; j++) {
+      if (conflictoPar(prendas[i].c, prendas[j].c, prendas[i].slot, prendas[j].slot, ocasion))
+        return null;
+    }
+  }
+  const acentos = prendas.filter(p => p.c.acentoFuerte);
+  if (acentos.length > 1) return null;   // más de un color que grita
+
+  // ---- puntaje ----
+  let score = 50;
+  const especificas = [];   // dicen algo de ESTOS colores
+  const genericas = [];     // valen para cualquier outfit parecido
+
+  const neutros = prendas.filter(p => p.c.neutro).length;
+  if (neutros === 3)      { score += 6;  genericas.push('tres neutros: no falla nunca'); }
+  else if (neutros === 2) { score += 13; genericas.push('dos neutros de base y un solo color protagonista'); }
+  else                    { score -= 6; }
+
+  const dL = Math.abs(arriba.lum - pantalon.lum);
+  if (dL >= 55)      { score += 6;  especificas.push(arriba.nombre.toLowerCase() + ' sobre ' + pantalon.nombre.toLowerCase() + ' marca bien las dos mitades'); }
+  else if (dL >= 20) { score += 9;  genericas.push('el contraste entre arriba y abajo separa las dos mitades'); }
+
+  // armonía entre los dos colores más cromáticos
+  const cromaticos = prendas.map(p => p.c).filter(c => !c.acromatico).sort((x,y) => y.s - x.s);
+  let dhPrincipal = null;
+  if (cromaticos.length >= 2) {
+    const dh = distMatiz(cromaticos[0], cromaticos[1]);
+    dhPrincipal = dh;
+    const par = cromaticos[0].nombre.toLowerCase() + ' y ' + cromaticos[1].nombre.toLowerCase();
+    if (dh !== null) {
+      if (dh < 15)                    { score += 6; especificas.push(par + ' son el mismo matiz en dos intensidades'); }
+      else if (dh < 45)               { score += 8; especificas.push(par + ' son matices vecinos, se acompañan'); }
+      else if (dh >= 150 && dh <= 210){ score += 9; especificas.push(par + ' son opuestos y se realzan'); }
+      else if (dh >= 60 && dh <= 120) { score -= 7; }
+    }
+  }
+
+  const calidos = prendas.filter(p => p.c.temp === 'calido' && p.c.s > 20).length;
+  const frios   = prendas.filter(p => p.c.temp === 'frio'   && p.c.s > 20).length;
+  if (calidos && frios) score -= 7;
+  else if (calidos >= 2 || frios >= 2) { score += 4; }
+
+  if (estacion) {
+    const enPaleta = prendas.filter(p => p.c.estaciones.includes(estacion)).length;
+    score += enPaleta * 6;
+    const fuera = prendas.filter(p => p.c.estaciones.includes(OPUESTA[estacion])).length;
+    score -= fuera * 4;
+  }
+
+  prendas.forEach(p => {
+    if (p.c.clima.includes(clima)) score += 3; else score -= 4;
+  });
+
+  // coherencia del zapato con la parte de abajo
+  if (['cuero','chocolate','camel'].includes(zapatos.id) && ['camel','beige','oliva','crema','marino','taupe','denim','chocolate'].includes(pantalon.id)) score += 5;
+  if (zapatos.id === 'negro' && ['marino','carbon','negro','grisMedio'].includes(pantalon.id)) score += 5;
+
+  const clave = [arriba.id, pantalon.id, zapatos.id].slice().sort().join('|');
+  const esClasico = CLASICOS.has(clave);
+  if (esClasico) {
+    score += 22;
+    especificas.unshift(arriba.nombre.toLowerCase() + ' con ' + pantalon.nombre.toLowerCase() +
+                        ' y zapato ' + zapatos.nombre.toLowerCase() + ' es de manual');
+  }
+
+  // ---- etiqueta ----
+  let etiqueta = 'Combinación equilibrada';
+  if (esClasico)                                                    etiqueta = 'Clásico infalible';
+  else if (prendas.every(p => TIERRA.includes(p.c.id)))             etiqueta = 'Tonos tierra';
+  else if (dL >= 55)                                                etiqueta = 'Contraste alto';
+  else if (neutros === 2 && acentos.length === 1)                   etiqueta = 'Un solo acento';
+  else if (dhPrincipal !== null && dhPrincipal < 25)                etiqueta = 'Tono sobre tono';
+  else if (neutros === 3)                                           etiqueta = 'Sobrio';
+
+  const enPaleta = estacion ? prendas.filter(p => p.c.estaciones.includes(estacion)).length : 0;
+  if (enPaleta >= 2) especificas.push('cae dentro de tu paleta ' + ESTACIONES[estacion].nombre.toLowerCase());
+
+  const razones = especificas.concat(genericas);
+  return {
+    arriba, pantalon, zapatos, score, etiqueta, enPaleta,
+    razon: razones.slice(0, 2).join('; ') || 'los tres tonos conviven sin pelearse',
+  };
+}
+
+/* Genera los mejores outfits partiendo de una prenda fija. */
+function sugerir(slotBase, colorBase, ocasion, estacion, clima) {
+  const oc = OCASIONES[ocasion];
+  const opciones = {};
+  SLOTS.forEach(s => {
+    opciones[s.id] = s.id === slotBase ? [colorBase] : oc[s.id].map(id => PORID[id]);
+  });
+
+  const todos = [];
+  opciones.arriba.forEach(a =>
+    opciones.pantalon.forEach(p =>
+      opciones.zapatos.forEach(z => {
+        const r = evaluar(a, p, z, ocasion, estacion, clima);
+        if (r) todos.push(r);
+      })));
+
+  todos.sort((x, y) => y.score - x.score);
+
+  // variedad: que ni un color ni una misma etiqueta copen todos los resultados
+  const usos = { arriba:{}, pantalon:{}, zapatos:{} };
+  const usosEtiqueta = {};
+  const elegidos = [];
+  for (const pasada of [1, 2]) {           // 2ª pasada: si faltan, relajamos los topes
+    for (const r of todos) {
+      if (elegidos.length >= 6) break;
+      if (elegidos.includes(r)) continue;
+      if (pasada === 1) {
+        if ((usosEtiqueta[r.etiqueta] || 0) >= 2) continue;
+        // arriba y pantalón no se repiten; el zapato sí puede aparecer dos veces
+        const tope = s => (s.id === 'zapatos' ? 2 : 1);
+        if (SLOTS.some(s => s.id !== slotBase && (usos[s.id][r[s.id].id] || 0) >= tope(s))) continue;
+      }
+      SLOTS.forEach(s => { usos[s.id][r[s.id].id] = (usos[s.id][r[s.id].id] || 0) + 1; });
+      usosEtiqueta[r.etiqueta] = (usosEtiqueta[r.etiqueta] || 0) + 1;
+      elegidos.push(r);
+    }
+  }
+  return elegidos;
+}
+
+/* Colores que chocan con la prenda base, con el motivo. */
+function evitarCon(slotBase, colorBase, ocasion) {
+  const oc = OCASIONES[ocasion];
+  const salida = [];
+  const vistos = new Set();
+  for (const s of SLOTS) {
+    if (s.id === slotBase) continue;
+    for (const id of oc[s.id]) {
+      if (vistos.has(id)) continue;
+      const motivo = conflictoPar(colorBase, PORID[id], slotBase, s.id, ocasion);
+      if (motivo) {
+        vistos.add(id);
+        salida.push({ color: PORID[id], slot: s, motivo });
+      }
+    }
+  }
+  return salida.slice(0, 3);
+}
+
+/* =========================================================================
+   4. TEST de paleta personal
+   ========================================================================= */
+const PREGUNTAS = [
+  { t:'Las venas de tu muñeca, a la luz del día, se ven…', o:[
+      { txt:'Verdosas',                     calido: 2, prof: 0 },
+      { txt:'Azuladas o violáceas',         calido:-2, prof: 0 },
+      { txt:'No las distingo bien',         calido: 0, prof: 0 },
+  ]},
+  { t:'Cuando tomás sol…', o:[
+      { txt:'Me bronceo fácil, tono dorado',      calido: 2, prof: 1 },
+      { txt:'Me pongo colorado y casi no bronceo',calido:-2, prof:-1 },
+      { txt:'Primero colorado, después bronceo',  calido: 0, prof: 0 },
+  ]},
+  { t:'Tu color de pelo natural (el de siempre, no el de ahora)', o:[
+      { txt:'Rubio o castaño claro dorado',   calido: 2, prof:-2 },
+      { txt:'Rubio o castaño ceniza',         calido:-2, prof:-1 },
+      { txt:'Castaño oscuro o negro',         calido:-1, prof: 3 },
+      { txt:'Pelirrojo o cobrizo',            calido: 3, prof: 1 },
+      { txt:'Canoso o blanco',                calido:-2, prof: 0 },
+  ]},
+  { t:'Tus ojos son…', o:[
+      { txt:'Marrones claros, miel o verdes', calido: 2, prof: 0 },
+      { txt:'Azules o grises',                calido:-2, prof:-2 },
+      { txt:'Marrón oscuro o casi negros',    calido: 0, prof: 3 },
+      { txt:'Verde azulado',                  calido:-1, prof: 0 },
+  ]},
+];
+
+function calcularEstacion(respuestas) {
+  let calido = 0, prof = 0;
+  respuestas.forEach((iOpt, iPreg) => {
+    const o = PREGUNTAS[iPreg].o[iOpt];
+    calido += o.calido; prof += o.prof;
+  });
+  if (calido > 0)  return prof > 0 ? 'otono' : 'primavera';
+  return prof > 0 ? 'invierno' : 'verano';
+}
+
+/* =========================================================================
+   5. ESTADO + persistencia
+   ========================================================================= */
+const CLAVE = 'combina.v1';
+const estado = {
+  estacion: null,
+  ocasion: 'oficina',
+  slot: 'pantalon',
+  color: 'marino',
+  clima: climaPorDefecto(),
+  pantalla: 'hoy',
+};
+
+function climaPorDefecto() {
+  // hemisferio sur (Argentina): dic-feb calor, jun-ago frío, resto templado
+  const m = new Date().getMonth();
+  if (m === 11 || m <= 1) return 'calor';
+  if (m >= 5 && m <= 7)   return 'frio';
+  return 'templado';
+}
+
+function guardar() {
+  try {
+    localStorage.setItem(CLAVE, JSON.stringify({
+      estacion: estado.estacion, ocasion: estado.ocasion,
+      slot: estado.slot, color: estado.color, clima: estado.clima,
+    }));
+  } catch (e) { /* modo privado de Safari: seguimos sin guardar */ }
+}
+function cargar() {
+  try {
+    const raw = localStorage.getItem(CLAVE);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    if (d.estacion && ESTACIONES[d.estacion]) estado.estacion = d.estacion;
+    if (d.ocasion && OCASIONES[d.ocasion])    estado.ocasion  = d.ocasion;
+    if (d.slot && SLOTS.some(s => s.id === d.slot)) estado.slot = d.slot;
+    if (d.color && PORID[d.color])            estado.color    = d.color;
+    if (d.clima && CLIMAS.some(c => c.id === d.clima)) estado.clima = d.clima;
+    return true;
+  } catch (e) { return false; }
+}
+
+/* =========================================================================
+   6. UI
+   ========================================================================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function mostrarPantalla(cual) {
+  estado.pantalla = cual;
+  $('pHoy').hidden    = cual !== 'hoy';
+  $('pPaleta').hidden = cual !== 'paleta';
+  $('pTest').hidden   = cual !== 'test';
+  $('tabHoy').setAttribute('aria-selected', cual === 'hoy');
+  $('tabPaleta').setAttribute('aria-selected', cual === 'paleta');
+  const titulos = {
+    hoy:    ['¿Combina?', 'Elegí una prenda y mirá con qué va'],
+    paleta: ['Mi paleta', estado.estacion ? ESTACIONES[estado.estacion].nombre : 'Todavía sin definir'],
+    test:   ['Tu paleta', 'Cuatro preguntas y listo'],
+  };
+  $('tituloApp').innerHTML = esc(titulos[cual][0]) +
+    '<span class="sub">' + esc(titulos[cual][1]) + '</span>';
+  window.scrollTo(0, 0);
+}
+
+function pintarChips(cont, items, activoId, onPick) {
+  cont.innerHTML = '';
+  items.forEach(it => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', String(it.id === activoId));
+    b.innerHTML = (it.glifo ? '<span>' + it.glifo + '</span>' : '') + esc(it.nombre);
+    b.addEventListener('click', () => onPick(it.id));
+    cont.appendChild(b);
+  });
+}
+
+function pintarGrilla() {
+  const permitidos = OCASIONES[estado.ocasion][estado.slot];
+  if (!permitidos.includes(estado.color)) estado.color = permitidos[0];
+
+  const slot = SLOTS.find(s => s.id === estado.slot);
+  $('rotuloColor').textContent = '…' + slot.pregunta + ', de este color';
+
+  const g = $('grillaColores');
+  g.innerHTML = '';
+  permitidos.forEach(id => {
+    const c = PORID[id];
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sw';
+    b.setAttribute('aria-pressed', String(id === estado.color));
+    b.setAttribute('aria-label', c.nombre);
+    const enPaleta = estado.estacion && c.estaciones.includes(estado.estacion);
+    b.innerHTML =
+      '<span class="disco" style="background:' + c.hex + '">' +
+        (enPaleta ? '<span class="estrella">★</span>' : '') +
+      '</span><span class="nom">' + esc(c.nombre) + '</span>';
+    b.addEventListener('click', () => {
+      estado.color = id;
+      guardar();
+      pintarGrilla();
+      pintarResultados(true);
+    });
+    g.appendChild(b);
+  });
+}
+
+function tarjetaOutfit(r, i) {
+  const filas = SLOTS.map(s => {
+    const c = r[s.id];
+    return '<div class="barra">' +
+      '<span class="muestra" style="background:' + c.hex + '"></span>' +
+      '<span class="slot">' + esc(s.corto) + '</span>' +
+      '<span class="cnom">' + esc(c.nombre) + '</span>' +
+    '</div>';
+  }).join('');
+
+  const badge = r.enPaleta >= 2 ? '<span class="badge">★ Tu paleta</span>' : '';
+  const hexes = SLOTS.map(s => esc(r[s.id].nombre) + ' <b>' + r[s.id].hex + '</b>').join(' · ');
+
+  return '<article class="outfit">' +
+    '<button class="cab" type="button" data-detalle="' + i + '">' +
+      '<span class="titulo">' + esc(r.etiqueta) + '</span>' + badge +
+      '<span style="color:var(--txt-dim);font-size:13px">ⓘ</span>' +
+    '</button>' +
+    '<div class="barras">' + filas + '</div>' +
+    '<p class="porque">' + esc(r.razon.charAt(0).toUpperCase() + r.razon.slice(1)) + '.</p>' +
+    '<div class="detalle" id="det' + i + '" hidden>' + hexes +
+      '<br><br>Si los tres tonos te quedan muy planos, jugá con la textura: ' +
+      'una prenda con trama (lino, oxford, gamuza) rompe la monotonía sin sumar un cuarto color.' +
+    '</div>' +
+  '</article>';
+}
+
+function pintarResultados(scroll) {
+  const res = sugerir(estado.slot, PORID[estado.color], estado.ocasion, estado.estacion, estado.clima);
+  const cont = $('bloqueResultados');
+
+  if (!res.length) {
+    cont.innerHTML = '<p class="rotulo">Combinaciones</p>' +
+      '<div class="vacio">Con ese color no sale nada limpio para esta ocasión. ' +
+      'Probá otro color de base, o cambiá a Informal.</div>';
+  } else {
+    cont.innerHTML = '<p class="rotulo">' + res.length + ' formas de completarlo</p>' +
+      res.map(tarjetaOutfit).join('');
+    cont.querySelectorAll('[data-detalle]').forEach(b => {
+      b.addEventListener('click', () => {
+        const d = $('det' + b.dataset.detalle);
+        d.hidden = !d.hidden;
+      });
+    });
+  }
+
+  const ev = evitarCon(estado.slot, PORID[estado.color], estado.ocasion);
+  const contEv = $('bloqueEvitar');
+  if (!ev.length) {
+    contEv.innerHTML = '';
+  } else {
+    contEv.innerHTML = '<p class="rotulo">Evitá hoy</p><div class="evitar">' +
+      ev.map(e =>
+        '<div class="fila">' +
+          '<span class="muestra" style="background:' + e.color.hex + '"></span>' +
+          '<span class="txt"><b>' + esc(e.color.nombre) + ' en ' + esc(e.slot.corto.toLowerCase()) + '</b>' +
+          '<span>' + esc(e.motivo) + '</span></span>' +
+        '</div>').join('') +
+      '</div>';
+  }
+
+  if (scroll) {
+    requestAnimationFrame(() => {
+      cont.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+}
+
+function pintarHoy() {
+  pintarChips($('chipsOcasion'),
+    Object.keys(OCASIONES).map(id => ({ id, nombre: OCASIONES[id].nombre, glifo: OCASIONES[id].glifo })),
+    estado.ocasion,
+    id => { estado.ocasion = id; guardar(); pintarHoy(); pintarResultados(false); });
+
+  pintarChips($('chipsClima'), CLIMAS, estado.clima,
+    id => { estado.clima = id; guardar(); pintarHoy(); pintarResultados(false); });
+
+  pintarChips($('chipsSlot'),
+    SLOTS.map(s => ({ id: s.id, nombre: s.corto, glifo: s.glifo })),
+    estado.slot,
+    id => { estado.slot = id; guardar(); pintarHoy(); pintarResultados(false); });
+
+  pintarGrilla();
+}
+
+function pintarPaleta() {
+  const cont = $('pPaleta');
+  if (!estado.estacion) {
+    cont.innerHTML = '<div class="vacio">Todavía no hiciste el test.<br><br>' +
+      '<button class="btn-grande" id="btnIrTest">Hacer el test (1 minuto)</button></div>';
+    $('btnIrTest').addEventListener('click', abrirTest);
+    return;
+  }
+
+  const e = ESTACIONES[estado.estacion];
+  const tuyos = COLORES.filter(c => c.estaciones.includes(estado.estacion));
+  // sólo los acentos de la estación opuesta: los neutros (marino, gris, blanco…)
+  // son caballo de batalla de cualquier armario y no tiene sentido desaconsejarlos
+  const ajenos = COLORES.filter(c => !c.neutro &&
+                                     c.estaciones.includes(OPUESTA[estado.estacion]) &&
+                                     !c.estaciones.includes(estado.estacion));
+
+  const grilla = arr => '<div class="grilla">' + arr.map(c =>
+    '<div class="sw"><span class="disco" style="background:' + c.hex + '"></span>' +
+    '<span class="nom">' + esc(c.nombre) + '</span></div>').join('') + '</div>';
+
+  cont.innerHTML =
+    '<div class="estacion-card">' +
+      '<h2>' + e.glifo + ' ' + esc(e.nombre) + '</h2>' +
+      '<p>' + esc(e.desc) + '</p>' +
+    '</div>' +
+    '<div class="bloque"><p class="rotulo">Tus colores</p>' + grilla(tuyos) + '</div>' +
+    (ajenos.length
+      ? '<div class="bloque"><p class="rotulo">Con cuidado</p>' + grilla(ajenos) +
+        '<p class="nota" style="margin-top:10px">No están prohibidos: alejalos de la cara. ' +
+        'Sirven perfecto en pantalón o zapatos, donde no compiten con tu piel.</p></div>'
+      : '') +
+    '<div class="bloque"><button class="btn-texto" id="btnRehacer">Rehacer el test</button></div>';
+
+  $('btnRehacer').addEventListener('click', abrirTest);
+}
+
+/* --- test --- */
+let respuestas = [];
+
+function pintarTest() {
+  const cont = $('preguntas');
+  cont.innerHTML = PREGUNTAS.map((p, i) =>
+    '<div class="preg"><h2>' + (i+1) + '. ' + esc(p.t) + '</h2><div class="opts">' +
+    p.o.map((o, j) =>
+      '<button type="button" data-p="' + i + '" data-o="' + j + '" aria-pressed="' +
+      (respuestas[i] === j) + '">' + esc(o.txt) + '</button>').join('') +
+    '</div></div>').join('');
+
+  cont.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      respuestas[+b.dataset.p] = +b.dataset.o;
+      pintarTest();
+    });
+  });
+
+  const completo = PREGUNTAS.every((_, i) => respuestas[i] !== undefined);
+  $('btnVerResultado').disabled = !completo;
+}
+
+function abrirTest() {
+  respuestas = [];
+  pintarTest();
+  mostrarPantalla('test');
+}
+
+/* =========================================================================
+   7. arranque
+   ========================================================================= */
+$('tabHoy').addEventListener('click',    () => { pintarHoy(); pintarResultados(false); mostrarPantalla('hoy'); });
+$('tabPaleta').addEventListener('click', () => { pintarPaleta(); mostrarPantalla('paleta'); });
+$('btnTest').addEventListener('click',   abrirTest);
+
+$('btnSaltar').addEventListener('click', () => {
+  guardar();
+  pintarHoy(); pintarResultados(false); mostrarPantalla('hoy');
+});
+
+$('btnVerResultado').addEventListener('click', () => {
+  estado.estacion = calcularEstacion(respuestas);
+  guardar();
+  pintarHoy();
+  pintarPaleta();
+  mostrarPantalla('paleta');
+});
+
+const habia = cargar();
+pintarHoy();
+pintarResultados(false);
+pintarPaleta();
+mostrarPantalla(habia ? 'hoy' : 'test');
+if (!habia) pintarTest();
+</script>
