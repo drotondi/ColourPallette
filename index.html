@@ -1,3 +1,5 @@
+<!doctype html>
+<html lang="es">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>¿Combina? · Paleta de color para hombres</title>
@@ -200,19 +202,21 @@
     color: var(--ok);
     white-space: nowrap;
   }
-  .barras { display: flex; flex-direction: column; }
-  .barra {
-    display: flex; align-items: center; gap: 12px;
-    padding: 0 14px;
-    min-height: 46px;
+  /* las dos prendas, grandes y una al lado de la otra */
+  .par { display: grid; grid-template-columns: 1fr 1fr; }
+  .par .mitad {
+    min-height: 150px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 12px 14px;
   }
-  .barra .muestra {
-    width: 46px; height: 30px; border-radius: 8px;
-    border: 1px solid var(--sw-borde);
-    flex: none;
+  /* una línea fina entre las dos para que dos colores parecidos no se fundan */
+  .par .mitad + .mitad { box-shadow: inset 1px 0 0 var(--sw-borde); }
+  .par .slot {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    opacity: .75;
   }
-  .barra .slot { font-size: 12px; font-weight: 700; color: var(--txt-dim); width: 66px; flex: none; text-transform: uppercase; letter-spacing: .04em; }
-  .barra .cnom { font-size: 15px; font-weight: 600; }
+  .par .cnom { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
   .porque {
     padding: 10px 14px 14px;
     font-size: 13.5px;
@@ -237,7 +241,7 @@
     border-radius: 12px;
     padding: 9px 12px;
   }
-  .evitar .muestra { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--sw-borde); flex: none; }
+  .evitar .muestra { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--sw-borde); flex: none; }
   .evitar .txt { font-size: 13.5px; }
   .evitar .txt b { display: block; font-size: 14.5px; }
   .evitar .txt span { color: var(--warn); }
@@ -416,6 +420,16 @@ function rgbToHsl(r,g,b) {
 /* luminancia percibida 0-100 (Rec. 601), más fiel al ojo que la L de HSL */
 function luma(r,g,b) { return (0.299*r + 0.587*g + 0.114*b) / 255 * 100; }
 
+/* luminancia relativa WCAG y razón de contraste, para elegir el color del texto
+   que va encima de cada muestra */
+function lumRelativa(r,g,b) {
+  const f = v => { v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); };
+  return 0.2126*f(r) + 0.7152*f(g) + 0.0722*f(b);
+}
+function contraste(l1, l2) {
+  return (Math.max(l1,l2) + 0.05) / (Math.min(l1,l2) + 0.05);
+}
+
 const PORID = {};
 COLORES.forEach(c => {
   const [r,g,b] = hexToRgb(c.hex);
@@ -424,13 +438,15 @@ COLORES.forEach(c => {
   c.lum = luma(r,g,b);
   c.acromatico = s < 12;          // gris/blanco/negro: el matiz no dice nada
   c.acentoFuerte = s > 45;
+  // negro o blanco encima, el que más contraste dé contra este color
+  const lr = lumRelativa(r,g,b);
+  c.txt = contraste(lr, 0) >= contraste(lr, 1) ? '#000000' : '#FFFFFF';
   PORID[c.id] = c;
 });
 
 const SLOTS = [
   { id:'arriba',   nombre:'Arriba',   corto:'Arriba',   glifo:'👕', pregunta:'la remera, camisa o sweater' },
   { id:'pantalon', nombre:'Pantalón', corto:'Pantalón', glifo:'👖', pregunta:'el pantalón' },
-  { id:'zapatos',  nombre:'Zapatos',  corto:'Zapatos',  glifo:'👞', pregunta:'los zapatos' },
 ];
 
 /* =========================================================================
@@ -441,19 +457,16 @@ const OCASIONES = {
     nombre: 'Oficina', glifo: '💼',
     arriba:   ['blanco','celeste','crema','grisClaro','hielo','beige','rosaPolvo','lavanda','salvia','denim','marino','oliva','azulAcero','burdeos'],
     pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','azulAcero','taupe'],
-    zapatos:  ['cuero','chocolate','negro','burdeos','camel'],
   },
   elegante: {
     nombre: 'Elegante', glifo: '🥂',
-    arriba:   ['blanco','celeste','crema','grisClaro','hielo','rosaPolvo'],
-    pantalon: ['marino','carbon','negro','grisMedio','botella','burdeos'],
-    zapatos:  ['negro','chocolate','burdeos'],
+    arriba:   ['blanco','celeste','crema','grisClaro','hielo','rosaPolvo','lavanda'],
+    pantalon: ['marino','carbon','negro','grisMedio','botella','burdeos','chocolate'],
   },
   informal: {
     nombre: 'Informal', glifo: '🧢',
     arriba:   COLORES.map(c => c.id),
     pantalon: ['marino','carbon','grisMedio','negro','camel','oliva','beige','chocolate','denim','azulAcero','taupe','crema','burdeos','botella','cuero'],
-    zapatos:  ['blanco','cuero','chocolate','negro','camel','oliva','grisMedio','burdeos','marino','beige','crema'],
   },
 };
 
@@ -471,17 +484,15 @@ const ESTACIONES = {
 };
 const OPUESTA = { primavera:'invierno', invierno:'primavera', verano:'otono', otono:'verano' };
 
-/* combinaciones clásicas de sastrería que siempre funcionan */
+/* pares clásicos de sastrería que siempre funcionan (pantalón + arriba) */
 const CLASICOS = new Set([
-  ['marino','blanco','chocolate'], ['marino','blanco','cuero'],
-  ['marino','celeste','chocolate'], ['marino','crema','cuero'],
-  ['carbon','blanco','negro'], ['grisMedio','blanco','negro'],
-  ['carbon','blanco','burdeos'], ['carbon','celeste','negro'],
-  ['oliva','crema','camel'], ['oliva','blanco','cuero'],
-  ['beige','blanco','cuero'], ['camel','marino','chocolate'],
-  ['chocolate','celeste','chocolate'], ['negro','blanco','negro'],
-  ['denim','blanco','blanco'], ['grisMedio','celeste','chocolate'],
-  ['marino','blanco','blanco'], ['beige','celeste','cuero'],
+  ['marino','blanco'], ['marino','celeste'], ['marino','crema'],
+  ['carbon','blanco'], ['carbon','celeste'],
+  ['grisMedio','blanco'], ['grisMedio','celeste'],
+  ['oliva','crema'], ['oliva','blanco'],
+  ['beige','blanco'], ['beige','celeste'],
+  ['camel','marino'], ['chocolate','celeste'],
+  ['negro','blanco'], ['denim','blanco'],
 ].map(t => t.slice().sort().join('|')));
 
 const MARRONES = ['chocolate','cuero','camel','taupe','beige','crema'];
@@ -501,7 +512,6 @@ function distMatiz(a, b) {
 function conflictoPar(a, b, slotA, slotB, ocasion) {
   const ids = [a.id, b.id];
   const tiene = id => ids.includes(id);
-  const slotDe = id => (a.id === id ? slotA : slotB);
 
   if (tiene('negro') && MARRONES.some(m => tiene(m) && m !== 'crema' && m !== 'beige'))
     return 'el negro con el marrón se pelean: ninguno de los dos manda';
@@ -509,14 +519,6 @@ function conflictoPar(a, b, slotA, slotB, ocasion) {
   if (tiene('negro') && tiene('marino')) {
     if (ocasion !== 'informal')
       return 'negro y azul marino juntos parecen un error de luz, no una decisión';
-  }
-
-  if (a.id === 'negro' && slotDe('negro') === 'zapatos' || b.id === 'negro' && slotDe('negro') === 'zapatos') {
-    const otro = a.id === 'negro' ? b : a;
-    const otroSlot = a.id === 'negro' ? slotB : slotA;
-    if (otroSlot === 'pantalon' && ocasion !== 'informal' &&
-        ['camel','beige','crema','taupe','cuero','chocolate'].includes(otro.id))
-      return 'zapato negro con pantalón claro o marrón corta la pierna y desentona';
   }
 
   // contraste entre arriba y pantalón: el error más común
@@ -543,35 +545,33 @@ function conflictoPar(a, b, slotA, slotB, ocasion) {
   return null;
 }
 
-function evaluar(arriba, pantalon, zapatos, ocasion, estacion, clima) {
+function evaluar(arriba, pantalon, ocasion, estacion, clima) {
   const prendas = [
     { c: arriba,   slot:'arriba' },
     { c: pantalon, slot:'pantalon' },
-    { c: zapatos,  slot:'zapatos' },
   ];
 
   // ---- descartes duros ----
-  for (let i = 0; i < 3; i++) {
-    for (let j = i+1; j < 3; j++) {
-      if (conflictoPar(prendas[i].c, prendas[j].c, prendas[i].slot, prendas[j].slot, ocasion))
-        return null;
-    }
-  }
+  if (conflictoPar(arriba, pantalon, 'arriba', 'pantalon', ocasion)) return null;
   const acentos = prendas.filter(p => p.c.acentoFuerte);
-  if (acentos.length > 1) return null;   // más de un color que grita
+  if (acentos.length > 1) return null;   // las dos prendas gritando a la vez
 
   // ---- puntaje ----
   let score = 50;
   const especificas = [];   // dicen algo de ESTOS colores
   const genericas = [];     // valen para cualquier outfit parecido
 
+  // si es un clásico, eso ya lo explica todo: no hace falta razonarlo dos veces
+  const clave = [arriba.id, pantalon.id].slice().sort().join('|');
+  const esClasico = CLASICOS.has(clave);
+
   const neutros = prendas.filter(p => p.c.neutro).length;
-  if (neutros === 3)      { score += 6;  genericas.push('tres neutros: no falla nunca'); }
-  else if (neutros === 2) { score += 13; genericas.push('dos neutros de base y un solo color protagonista'); }
+  if (neutros === 2)      { score += 6;  genericas.push('dos neutros: sobrio y seguro'); }
+  else if (neutros === 1) { score += 13; genericas.push('un neutro de base y un solo color protagonista'); }
   else                    { score -= 6; }
 
   const dL = Math.abs(arriba.lum - pantalon.lum);
-  if (dL >= 55)      { score += 6;  especificas.push(arriba.nombre.toLowerCase() + ' sobre ' + pantalon.nombre.toLowerCase() + ' marca bien las dos mitades'); }
+  if (dL >= 55)      { score += 6;  if (!esClasico) especificas.push(arriba.nombre.toLowerCase() + ' sobre ' + pantalon.nombre.toLowerCase() + ' marca bien las dos mitades'); }
   else if (dL >= 20) { score += 9;  genericas.push('el contraste entre arriba y abajo separa las dos mitades'); }
 
   // armonía entre los dos colores más cromáticos
@@ -592,7 +592,7 @@ function evaluar(arriba, pantalon, zapatos, ocasion, estacion, clima) {
   const calidos = prendas.filter(p => p.c.temp === 'calido' && p.c.s > 20).length;
   const frios   = prendas.filter(p => p.c.temp === 'frio'   && p.c.s > 20).length;
   if (calidos && frios) score -= 7;
-  else if (calidos >= 2 || frios >= 2) { score += 4; }
+  else if (calidos === 2 || frios === 2) { score += 4; }
 
   if (estacion) {
     const enPaleta = prendas.filter(p => p.c.estaciones.includes(estacion)).length;
@@ -605,16 +605,12 @@ function evaluar(arriba, pantalon, zapatos, ocasion, estacion, clima) {
     if (p.c.clima.includes(clima)) score += 3; else score -= 4;
   });
 
-  // coherencia del zapato con la parte de abajo
-  if (['cuero','chocolate','camel'].includes(zapatos.id) && ['camel','beige','oliva','crema','marino','taupe','denim','chocolate'].includes(pantalon.id)) score += 5;
-  if (zapatos.id === 'negro' && ['marino','carbon','negro','grisMedio'].includes(pantalon.id)) score += 5;
-
-  const clave = [arriba.id, pantalon.id, zapatos.id].slice().sort().join('|');
-  const esClasico = CLASICOS.has(clave);
   if (esClasico) {
     score += 22;
-    especificas.unshift(arriba.nombre.toLowerCase() + ' con ' + pantalon.nombre.toLowerCase() +
-                        ' y zapato ' + zapatos.nombre.toLowerCase() + ' es de manual');
+    especificas.length = 0;   // el clásico se explica solo
+    genericas.length = 0;
+    especificas.push(arriba.nombre.toLowerCase() + ' con ' + pantalon.nombre.toLowerCase() +
+                     ' es de manual: sale bien siempre');
   }
 
   // ---- etiqueta ----
@@ -622,17 +618,17 @@ function evaluar(arriba, pantalon, zapatos, ocasion, estacion, clima) {
   if (esClasico)                                                    etiqueta = 'Clásico infalible';
   else if (prendas.every(p => TIERRA.includes(p.c.id)))             etiqueta = 'Tonos tierra';
   else if (dL >= 55)                                                etiqueta = 'Contraste alto';
-  else if (neutros === 2 && acentos.length === 1)                   etiqueta = 'Un solo acento';
+  else if (neutros === 1 && acentos.length === 1)                   etiqueta = 'Un solo acento';
   else if (dhPrincipal !== null && dhPrincipal < 25)                etiqueta = 'Tono sobre tono';
-  else if (neutros === 3)                                           etiqueta = 'Sobrio';
+  else if (neutros === 2)                                           etiqueta = 'Sobrio';
 
   const enPaleta = estacion ? prendas.filter(p => p.c.estaciones.includes(estacion)).length : 0;
-  if (enPaleta >= 2) especificas.push('cae dentro de tu paleta ' + ESTACIONES[estacion].nombre.toLowerCase());
+  if (enPaleta === 2) especificas.push('las dos caen dentro de tu paleta ' + ESTACIONES[estacion].nombre.toLowerCase());
 
   const razones = especificas.concat(genericas);
   return {
-    arriba, pantalon, zapatos, score, etiqueta, enPaleta,
-    razon: razones.slice(0, 2).join('; ') || 'los tres tonos conviven sin pelearse',
+    arriba, pantalon, score, etiqueta, enPaleta,
+    razon: razones.slice(0, 2).join('; ') || 'los dos tonos conviven sin pelearse',
   };
 }
 
@@ -646,34 +642,15 @@ function sugerir(slotBase, colorBase, ocasion, estacion, clima) {
 
   const todos = [];
   opciones.arriba.forEach(a =>
-    opciones.pantalon.forEach(p =>
-      opciones.zapatos.forEach(z => {
-        const r = evaluar(a, p, z, ocasion, estacion, clima);
-        if (r) todos.push(r);
-      })));
+    opciones.pantalon.forEach(p => {
+      const r = evaluar(a, p, ocasion, estacion, clima);
+      if (r) todos.push(r);
+    }));
 
+  // con dos prendas cada candidato ya difiere en el único slot que varía,
+  // así que no hace falta forzar variedad: alcanza con ordenar y cortar
   todos.sort((x, y) => y.score - x.score);
-
-  // variedad: que ni un color ni una misma etiqueta copen todos los resultados
-  const usos = { arriba:{}, pantalon:{}, zapatos:{} };
-  const usosEtiqueta = {};
-  const elegidos = [];
-  for (const pasada of [1, 2]) {           // 2ª pasada: si faltan, relajamos los topes
-    for (const r of todos) {
-      if (elegidos.length >= 6) break;
-      if (elegidos.includes(r)) continue;
-      if (pasada === 1) {
-        if ((usosEtiqueta[r.etiqueta] || 0) >= 2) continue;
-        // arriba y pantalón no se repiten; el zapato sí puede aparecer dos veces
-        const tope = s => (s.id === 'zapatos' ? 2 : 1);
-        if (SLOTS.some(s => s.id !== slotBase && (usos[s.id][r[s.id].id] || 0) >= tope(s))) continue;
-      }
-      SLOTS.forEach(s => { usos[s.id][r[s.id].id] = (usos[s.id][r[s.id].id] || 0) + 1; });
-      usosEtiqueta[r.etiqueta] = (usosEtiqueta[r.etiqueta] || 0) + 1;
-      elegidos.push(r);
-    }
-  }
-  return elegidos;
+  return todos.slice(0, 6);
 }
 
 /* Colores que chocan con la prenda base, con el motivo. */
@@ -843,17 +820,19 @@ function pintarGrilla() {
   });
 }
 
+/* Negro o blanco, el que se lea mejor sobre ese color (calculado en el catálogo). */
+function textoSobre(c) { return c.txt; }
+
 function tarjetaOutfit(r, i) {
-  const filas = SLOTS.map(s => {
+  const mitades = SLOTS.map(s => {
     const c = r[s.id];
-    return '<div class="barra">' +
-      '<span class="muestra" style="background:' + c.hex + '"></span>' +
+    return '<div class="mitad" style="background:' + c.hex + ';color:' + textoSobre(c) + '">' +
       '<span class="slot">' + esc(s.corto) + '</span>' +
       '<span class="cnom">' + esc(c.nombre) + '</span>' +
     '</div>';
   }).join('');
 
-  const badge = r.enPaleta >= 2 ? '<span class="badge">★ Tu paleta</span>' : '';
+  const badge = r.enPaleta === 2 ? '<span class="badge">★ Tu paleta</span>' : '';
   const hexes = SLOTS.map(s => esc(r[s.id].nombre) + ' <b>' + r[s.id].hex + '</b>').join(' · ');
 
   return '<article class="outfit">' +
@@ -861,11 +840,11 @@ function tarjetaOutfit(r, i) {
       '<span class="titulo">' + esc(r.etiqueta) + '</span>' + badge +
       '<span style="color:var(--txt-dim);font-size:13px">ⓘ</span>' +
     '</button>' +
-    '<div class="barras">' + filas + '</div>' +
+    '<div class="par">' + mitades + '</div>' +
     '<p class="porque">' + esc(r.razon.charAt(0).toUpperCase() + r.razon.slice(1)) + '.</p>' +
     '<div class="detalle" id="det' + i + '" hidden>' + hexes +
-      '<br><br>Si los tres tonos te quedan muy planos, jugá con la textura: ' +
-      'una prenda con trama (lino, oxford, gamuza) rompe la monotonía sin sumar un cuarto color.' +
+      '<br><br>Si los dos tonos te quedan muy planos, jugá con la textura: ' +
+      'una prenda con trama (lino, oxford, gamuza) rompe la monotonía sin sumar un tercer color.' +
     '</div>' +
   '</article>';
 }
@@ -958,7 +937,7 @@ function pintarPaleta() {
     (ajenos.length
       ? '<div class="bloque"><p class="rotulo">Con cuidado</p>' + grilla(ajenos) +
         '<p class="nota" style="margin-top:10px">No están prohibidos: alejalos de la cara. ' +
-        'Sirven perfecto en pantalón o zapatos, donde no compiten con tu piel.</p></div>'
+        'Sirven perfecto en el pantalón, donde no compiten con tu piel.</p></div>'
       : '') +
     '<div class="bloque"><button class="btn-texto" id="btnRehacer">Rehacer el test</button></div>';
 

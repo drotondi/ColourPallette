@@ -2,7 +2,8 @@
 
 App de bolsillo para decidir a la mañana qué colores de ropa combinan.
 Elegís la prenda que ya tenés puesta y a dónde vas, y te muestra seis formas de completar
-el outfit — más los colores que conviene evitar con esa base.
+el outfit — más los colores que conviene evitar con esa base. Trabaja con dos prendas:
+la de arriba y el pantalón.
 
 Es **un solo archivo** (`index.html`): sin build, sin dependencias, sin conexión a ningún servicio.
 
@@ -10,7 +11,7 @@ Es **un solo archivo** (`index.html`): sin build, sin dependencias, sin conexió
 
 1. **¿A dónde vas?** — Oficina · Elegante · Informal
 2. **Clima de hoy** — Calor · Templado · Frío (viene preseleccionado según el mes, hemisferio sur)
-3. **Ya tengo puesto…** — Arriba · Pantalón · Zapatos, y tocás el color
+3. **Ya tengo puesto…** — Arriba · Pantalón, y tocás el color
 4. Aparecen las combinaciones ordenadas de mejor a peor, con el motivo de por qué funcionan
 
 En la pestaña **Mi paleta** hay un test de cuatro preguntas (piel, sol, pelo, ojos) que define tu
@@ -21,10 +22,9 @@ Todo queda guardado en el celular (`localStorage`). No se envía nada a ningún 
 
 ## Publicar en GitHub Pages
 
-1. Mergear esta rama a `main`
-2. **Settings → Pages → Build and deployment → Deploy from a branch**
-3. Branch: `main`, carpeta `/ (root)` → **Save**
-4. Un minuto después queda en `https://drotondi.github.io/ColourPallette/`
+**Settings → Pages → Build and deployment → Deploy from a branch**, branch `main`,
+carpeta `/ (root)` → **Save**. Un minuto después queda en
+`https://drotondi.github.io/ColourPallette/`, y cada push a `main` lo actualiza solo.
 
 ### En el iPhone
 
@@ -45,24 +45,23 @@ Todo vive en `index.html`, en secciones numeradas dentro del `<script>`:
 | 5. Estado | persistencia en `localStorage` |
 | 6. UI | render de las tres pantallas |
 
-No hay outfits precargados: las combinaciones se **generan y puntúan** en el momento
-(~1.500 candidatas por consulta, filtradas a las 6 mejores con variedad forzada).
+No hay outfits precargados: las combinaciones se **generan y puntúan** en el momento y se
+recortan a las 6 mejores.
 
-### Reglas que descartan un outfit
+### Reglas que descartan una combinación
 
 - Negro con marrón
 - Negro con azul marino (salvo en informal)
-- Zapato negro con pantalón claro o marrón, fuera de lo informal
 - Arriba y pantalón casi con la misma claridad — el clásico "azul medio con gris medio"
 - Dos colores casi idénticos pero no iguales
-- Más de un color saturado peleando por la atención
+- Las dos prendas saturadas peleando por la atención
 
 ### Reglas que suman puntos
 
-Dos neutros y un solo acento (60-30-10), contraste marcado entre arriba y abajo, matices
+Un neutro de base y un solo acento (60-30-10), contraste marcado entre arriba y abajo, matices
 vecinos u opuestos en la rueda de color, coherencia de temperatura cálido/frío, coincidencia
-con tu paleta personal y con el clima del día, y un empujón fijo a los clásicos de sastrería
-(marino + blanco + marrón, gris + blanco + negro, oliva + crema + camel, etc.).
+con tu paleta personal y con el clima del día, y un empujón fijo a los pares clásicos de
+sastrería (marino + blanco, gris + celeste, oliva + crema, etc.).
 
 ### Agregar un color
 
